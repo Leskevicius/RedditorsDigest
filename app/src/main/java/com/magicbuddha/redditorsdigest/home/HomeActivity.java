@@ -1,15 +1,22 @@
 package com.magicbuddha.redditorsdigest.home;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.magicbuddha.redditorsdigest.R;
+import com.magicbuddha.redditorsdigest.reddit.AuthenticateBotTask;
 
-public class HomeActivity extends AppCompatActivity {
+import net.dean.jraw.RedditClient;
+
+import java.lang.ref.WeakReference;
+
+public class HomeActivity extends AppCompatActivity implements AuthenticateBotTask.AuthenticateCallback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,8 +25,7 @@ public class HomeActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-
+        new AuthenticateBotTask(new WeakReference<Context>(getApplicationContext()), this).execute();
     }
 
     @Override
@@ -48,5 +54,14 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onAuthenticated(RedditClient reddit) {
+        if (reddit == null) {
+            Log.w("ROKAS", "Reddit is null");
+        } else {
+            Log.w("ROKAS", "Reddit is NOT null");
+        }
     }
 }
