@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 
 import com.magicbuddha.redditorsdigest.R;
 import com.magicbuddha.redditorsdigest.reddit.AuthenticateBotTask;
@@ -16,7 +17,13 @@ import net.dean.jraw.RedditClient;
 
 import java.lang.ref.WeakReference;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class HomeActivity extends AppCompatActivity implements AuthenticateBotTask.AuthenticateCallback {
+
+    @BindView(R.id.fragment_container)
+    FrameLayout fragmentContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +32,17 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        new AuthenticateBotTask(new WeakReference<Context>(getApplicationContext()), this).execute();
+        ButterKnife.bind(this);
+
+        new AuthenticateBotTask(new WeakReference<>(getApplicationContext()), this).execute();
+
+        if (savedInstanceState == null) {
+            NoSubscriptionsFragment fragment = NoSubscriptionsFragment.getInstance(null);
+
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_container, fragment)
+                    .commit();
+        }
     }
 
     @Override

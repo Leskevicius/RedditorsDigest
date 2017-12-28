@@ -10,4 +10,6 @@
     <string name="bot_platform">android</string>
     <string name="bot_appId">com.magicbuddha.redditorsdigest</string>
     <string name="bot_version">v0.1</string>
+    <string name="no_subscription_message">There are no post to show. Try subscribing to some reddits.</string>
+    <string name="no_subscription_button">SEARCH SUBREDDITS</string>
 </resources>
