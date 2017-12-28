@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Redditors Digest</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_login">Login</string>
+
+    <!--AuthenticateBotTask-->
+    <string name="bot_platform">android</string>
+    <string name="bot_appId">com.magicbuddha.redditorsdigest</string>
+    <string name="bot_version">v0.1</string>
+</resources>

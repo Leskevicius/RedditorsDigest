@@ -53,3 +53,7 @@ google-services.json
 freeline.py
 freeline/
 freeline_project_description.json
+
+# Secrets
+app/src/main/res/values/secrets.xml
+app/src/main/java/com/magicbuddha/redditorsdigest/Secrets.java
