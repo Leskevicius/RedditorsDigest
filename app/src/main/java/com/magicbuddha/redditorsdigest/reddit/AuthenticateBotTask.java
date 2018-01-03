@@ -76,6 +76,11 @@ public class AuthenticateBotTask extends AsyncTask<Void, Void, RedditClient> {
     }
 
     public interface AuthenticateCallback {
+        /**
+         * Called then {@link RedditClient} is authenticated.
+         *
+         * @param reddit {@link RedditClient}. Null if authentication failed.
+         */
         void onAuthenticated(RedditClient reddit);
     }
 }

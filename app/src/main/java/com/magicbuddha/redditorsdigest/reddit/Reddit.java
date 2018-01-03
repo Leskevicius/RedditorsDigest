@@ -1,6 +1,10 @@
 package com.magicbuddha.redditorsdigest.reddit;
 
+import android.content.Context;
+
 import net.dean.jraw.RedditClient;
+
+import java.util.List;
 
 /**
  * Created by Magic_Buddha on 12/24/2017.
@@ -13,6 +17,11 @@ public class Reddit {
 
     private static final String TAG = Reddit.class.getCanonicalName();
 
+    /**
+     * Safe way of accessing a {@link Reddit} singleton reference.
+     *
+     * @return {@link Reddit}.
+     */
     public static Reddit getInstance() {
         if (redditInstance == null) {
             synchronized (Reddit.class) {
@@ -36,12 +45,19 @@ public class Reddit {
     }
 
     /**
+     * Grab {@link RedditClient}.
      *
-     *
-     * @return
+     * @return {@link RedditClient}.
      */
     public RedditClient getRedditClient() {
+        checkClient();
         return this.reddit;
     }
 
+    // makes sure that client has been initialized
+    private void checkClient() {
+        if (this.reddit == null) {
+            throw new IllegalStateException("Reddit client was not initialized before using Reddit api.");
+        }
+    }
 }
