@@ -1,6 +1,8 @@
 package com.magicbuddha.redditorsdigest.home;
 
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
@@ -14,18 +16,24 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
 import com.magicbuddha.redditorsdigest.R;
+import com.magicbuddha.redditorsdigest.data.SubscriptionsContract;
 import com.magicbuddha.redditorsdigest.reddit.AuthenticateBotTask;
+import com.magicbuddha.redditorsdigest.reddit.GetSubredditsTask;
 import com.magicbuddha.redditorsdigest.reddit.Reddit;
 import com.magicbuddha.redditorsdigest.search.SearchSubredditActivity;
 
 import net.dean.jraw.RedditClient;
+import net.dean.jraw.models.Submission;
+import net.dean.jraw.models.Subreddit;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HomeActivity extends AppCompatActivity implements AuthenticateBotTask.AuthenticateCallback {
+public class HomeActivity extends AppCompatActivity implements AuthenticateBotTask.AuthenticateCallback, GetSubredditsTask.SubredditsCallback{
 
     @BindView(R.id.fragment_container)
     FrameLayout fragmentContainer;
@@ -35,6 +43,9 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
 
     @BindView(R.id.home_progressbar)
     ProgressBar progressBar;
+
+    private List<Subreddit> subreddits;
+    private List<String> subscriptions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +59,18 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
         if (savedInstanceState == null) {
             new AuthenticateBotTask(new WeakReference<>(getApplicationContext()), this).execute();
             setLoading(true);
-            NoSubscriptionsFragment fragment = NoSubscriptionsFragment.getInstance(null);
 
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, fragment)
-                    .commit();
+            subscriptions = getSubscriptions();
+//            if (subscriptions.size() == 0) {
+                NoSubscriptionsFragment fragment = NoSubscriptionsFragment.getInstance(null);
+
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fragment_container, fragment)
+                        .commit();
+//            } else {
+                // get subreddits
+                // setup viewpager?
+//            }
         }
     }
 
@@ -112,6 +130,8 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
         }
 
         setLoading(false);
+
+        new GetSubredditsTask(new WeakReference<>(getApplicationContext()), this, true).execute();
     }
 
     private void setLoading(boolean isLoading) {
@@ -122,5 +142,29 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
             progressBar.setVisibility(View.GONE);
             fragmentContainer.setVisibility(View.VISIBLE);
         }
+    }
+
+    private List<String> getSubscriptions() {
+        Cursor result = getContentResolver().query(
+                SubscriptionsContract.SubscriptionEntity.CONTENT_URI,
+                null,
+                null,
+                null,
+                null
+        );
+
+        List<String> subscriptions = new ArrayList<String>();
+        result.moveToFirst();
+        while(!result.isAfterLast()) {
+            subscriptions.add(result.getString(result.getColumnIndex(SubscriptionsContract.SubscriptionEntity.SUBSCRIPTION_COLUMN))); //add the item
+            result.moveToNext();
+        }
+
+        return subscriptions;
+    }
+
+    @Override
+    public void onComplete(List<Submission> submissions) {
+        Log.w("ROKAS", submissions.toString());
     }
 }

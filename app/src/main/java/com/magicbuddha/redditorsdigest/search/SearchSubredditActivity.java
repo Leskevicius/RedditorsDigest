@@ -1,6 +1,8 @@
 package com.magicbuddha.redditorsdigest.search;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
@@ -19,10 +21,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.magicbuddha.redditorsdigest.R;
+import com.magicbuddha.redditorsdigest.data.SubscriptionsContract;
 import com.magicbuddha.redditorsdigest.reddit.Reddit;
 import com.magicbuddha.redditorsdigest.reddit.SearchSubredditsTask;
 
+import net.dean.jraw.models.Subreddit;
+
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -93,7 +99,7 @@ public class SearchSubredditActivity extends AppCompatActivity implements Search
         });
 
         // recycler view
-        adapter = new SearchSubredditAdapter(null);
+        adapter = new SearchSubredditAdapter(getApplicationContext(), null);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(adapter);
@@ -105,14 +111,34 @@ public class SearchSubredditActivity extends AppCompatActivity implements Search
     }
 
     @Override
-    public void onSearchComplete(List<String> subreddits) {
-        Log.w("ROKAS", subreddits.toString());
-        adapter.setData(subreddits);
-        setLoading(false);
+    public void onSearchComplete(List<Subreddit> subreddits) {
+        if (subreddits != null) {
+            Log.w("ROKAS", subreddits.toString());
 
-        if (subreddits.size() == 0) {
-            showNoResults(true);
+            Uri SubscriptionsUri = SubscriptionsContract.SubscriptionEntity.CONTENT_URI;
+
+            Cursor result = getContentResolver().query(
+                    SubscriptionsUri,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+
+            List<String> subscriptions = new ArrayList<String>();
+            result.moveToFirst();
+            while(!result.isAfterLast()) {
+                subscriptions.add(result.getString(result.getColumnIndex(SubscriptionsContract.SubscriptionEntity.SUBSCRIPTION_COLUMN))); //add the item
+                result.moveToNext();
+            }
+
+            adapter.setData(subreddits, subscriptions);
+
+            if (subreddits.size() == 0) {
+                showNoResults(true);
+            }
         }
+        setLoading(false);
     }
 
     private void setLoading(boolean isLoading) {

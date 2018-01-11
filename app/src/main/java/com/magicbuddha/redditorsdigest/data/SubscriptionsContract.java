@@ -21,7 +21,5 @@ public class SubscriptionsContract {
         public final static String TABLE_NAME = "subscriptions";
 
         public final static String SUBSCRIPTION_COLUMN = "subscription";
-
-        public final static String ID_COLUMN = "id";
     }
 }

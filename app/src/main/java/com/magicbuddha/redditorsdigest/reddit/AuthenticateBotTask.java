@@ -8,13 +8,13 @@ import android.util.Log;
 import com.magicbuddha.redditorsdigest.R;
 
 import net.dean.jraw.RedditClient;
+import net.dean.jraw.http.NetworkAdapter;
+import net.dean.jraw.http.OkHttpNetworkAdapter;
 import net.dean.jraw.http.UserAgent;
-import net.dean.jraw.http.oauth.Credentials;
-import net.dean.jraw.http.oauth.OAuthData;
-import net.dean.jraw.http.oauth.OAuthException;
+import net.dean.jraw.oauth.Credentials;
+import net.dean.jraw.oauth.OAuthHelper;
 
 import java.lang.ref.WeakReference;
-import java.util.UUID;
 
 /**
  * Created by Magic_Buddha on 12/26/2017.
@@ -39,28 +39,21 @@ public class AuthenticateBotTask extends AsyncTask<Void, Void, RedditClient> {
 
         Context context = weakContext.get();
         if (context != null) {
-            UserAgent userAgent = UserAgent.of(
+            UserAgent userAgent = new UserAgent(
                     context.getString(R.string.bot_platform),
                     context.getString(R.string.bot_appId),
                     context.getString(R.string.bot_version),
                     context.getString(R.string.bot_reddit_username));
 
-            reddit = new RedditClient(userAgent);
-
-            Credentials credentials = Credentials.userless(
+            Credentials credentials = Credentials.script(
+                    context.getString(R.string.bot_reddit_username),
+                    context.getString(R.string.bot_reddit_password),
                     context.getString(R.string.client_id),
-                    context.getString(R.string.client_secret),
-                    UUID.randomUUID()
+                    context.getString(R.string.client_secret)
             );
 
-            try {
-                OAuthData authData = reddit.getOAuthHelper().easyAuth(credentials);
-
-                reddit.authenticate(authData);
-            } catch (OAuthException e) {
-                Log.w(TAG, e);
-                reddit = null;
-            }
+            NetworkAdapter adapter = new OkHttpNetworkAdapter(userAgent);
+            reddit = OAuthHelper.automatic(adapter, credentials);
 
         } else {
             Log.w(TAG, "Failed authenticating the bot. Context was null.");

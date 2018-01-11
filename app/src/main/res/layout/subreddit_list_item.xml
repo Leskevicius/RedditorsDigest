@@ -42,5 +42,4 @@
         android:foreground="?attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"/>
-
 </merge>

@@ -58,7 +58,6 @@ public class SubredditListItemView extends LinearLayout {
         LayoutInflater.from(context).inflate(R.layout.subreddit_list_item, this);
         ButterKnife.bind(this, this);
 
-//        setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         int horizontalMarginPx = (int) getResources().getDimension(R.dimen.subreddit_list_item_horizontal_margin);
         int verticalMarginPx = (int) getResources().getDimension(R.dimen.subreddit_list_item_vertical_margin);
 
