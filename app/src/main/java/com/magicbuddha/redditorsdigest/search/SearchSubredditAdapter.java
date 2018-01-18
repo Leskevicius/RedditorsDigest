@@ -58,12 +58,14 @@ public class SearchSubredditAdapter extends RecyclerView.Adapter<SearchSubreddit
 
                             context.getContentResolver().insert(
                                     SubscriptionsContract.SubscriptionEntity.CONTENT_URI, cv);
+                            subscriptions.add(subreddits.get(adapterPosition).getName());
                         } else {
                             Uri unsubscribeUri = SubscriptionsContract.SubscriptionEntity.CONTENT_URI.buildUpon()
                                     .appendPath(subreddits.get(adapterPosition).getName())
                                     .build();
 
                             context.getContentResolver().delete(unsubscribeUri, null, null);
+                            subscriptions.remove(subreddits.get(adapterPosition).getName());
                         }
                     }
                 });
@@ -80,7 +82,7 @@ public class SearchSubredditAdapter extends RecyclerView.Adapter<SearchSubreddit
     public void onBindViewHolder(SearchSubredditAdapter.SubredditViewHolder holder, int position) {
         holder.view.setTitle(subreddits.get(position).getName());
         holder.view.setHint("Subs: " + subreddits.get(position).getSubscribers());
-        if (subscriptions.contains(subreddits.get(position).getTitle())) {
+        if (subscriptions.contains(subreddits.get(position).getName())) {
             holder.view.setSubscribed(true);
         } else {
             holder.view.setSubscribed(false);

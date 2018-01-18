@@ -85,8 +85,7 @@ public class SearchSubredditActivity extends AppCompatActivity implements Search
 
                 if (!TextUtils.isEmpty(searchString)) {
                     setLoading(true);
-                    new SearchSubredditsTask(new WeakReference<>(getApplicationContext()),
-                            SearchSubredditActivity.this, false).execute(searchString);
+                    new SearchSubredditsTask(SearchSubredditActivity.this, false).execute(searchString);
 
                     // dismiss keyboard
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);

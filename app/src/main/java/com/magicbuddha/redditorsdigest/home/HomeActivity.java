@@ -25,6 +25,7 @@ import com.magicbuddha.redditorsdigest.search.SearchSubredditActivity;
 import net.dean.jraw.RedditClient;
 import net.dean.jraw.models.Submission;
 import net.dean.jraw.models.Subreddit;
+import net.dean.jraw.references.SubredditReference;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -61,16 +62,17 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
             setLoading(true);
 
             subscriptions = getSubscriptions();
-//            if (subscriptions.size() == 0) {
+            if (subscriptions.size() == 0) {
                 NoSubscriptionsFragment fragment = NoSubscriptionsFragment.getInstance(null);
 
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.fragment_container, fragment)
                         .commit();
-//            } else {
-                // get subreddits
-                // setup viewpager?
-//            }
+            } else {
+//                 get subreddits
+//                 setup viewpager?
+
+            }
         }
     }
 
@@ -131,7 +133,7 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
 
         setLoading(false);
 
-        new GetSubredditsTask(new WeakReference<>(getApplicationContext()), this, true).execute();
+        new GetSubredditsTask(this).execute(subscriptions.toArray(new String[0]));
     }
 
     private void setLoading(boolean isLoading) {
@@ -164,7 +166,7 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
     }
 
     @Override
-    public void onComplete(List<Submission> submissions) {
-//        Log.w("ROKAS", submissions.toString());
+    public void onComplete(List<Subreddit> subreddits) {
+        Log.w("ROKASSS", subreddits.get(0).getFullName());
     }
 }
