@@ -54,13 +54,13 @@ public class SearchSubredditAdapter extends RecyclerView.Adapter<SearchSubreddit
                         // write to content provider?
                         if (isSubscribed) {
                             ContentValues cv = new ContentValues();
-                            cv.put(SubscriptionsContract.SubscriptionEntity.SUBSCRIPTION_COLUMN, subreddits.get(adapterPosition).getTitle());
+                            cv.put(SubscriptionsContract.SubscriptionEntity.SUBSCRIPTION_COLUMN, subreddits.get(adapterPosition).getName());
 
                             context.getContentResolver().insert(
                                     SubscriptionsContract.SubscriptionEntity.CONTENT_URI, cv);
                         } else {
                             Uri unsubscribeUri = SubscriptionsContract.SubscriptionEntity.CONTENT_URI.buildUpon()
-                                    .appendPath(subreddits.get(adapterPosition).getTitle())
+                                    .appendPath(subreddits.get(adapterPosition).getName())
                                     .build();
 
                             context.getContentResolver().delete(unsubscribeUri, null, null);
@@ -78,7 +78,7 @@ public class SearchSubredditAdapter extends RecyclerView.Adapter<SearchSubreddit
 
     @Override
     public void onBindViewHolder(SearchSubredditAdapter.SubredditViewHolder holder, int position) {
-        holder.view.setTitle(subreddits.get(position).getTitle());
+        holder.view.setTitle(subreddits.get(position).getName());
         holder.view.setHint("Subs: " + subreddits.get(position).getSubscribers());
         if (subscriptions.contains(subreddits.get(position).getTitle())) {
             holder.view.setSubscribed(true);

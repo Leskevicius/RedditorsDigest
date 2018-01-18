@@ -165,6 +165,6 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
 
     @Override
     public void onComplete(List<Submission> submissions) {
-        Log.w("ROKAS", submissions.toString());
+//        Log.w("ROKAS", submissions.toString());
     }
 }

@@ -113,7 +113,7 @@ public class SearchSubredditActivity extends AppCompatActivity implements Search
     @Override
     public void onSearchComplete(List<Subreddit> subreddits) {
         if (subreddits != null) {
-            Log.w("ROKAS", subreddits.toString());
+//            Log.w("ROKAS", subreddits.toString());
 
             Uri SubscriptionsUri = SubscriptionsContract.SubscriptionEntity.CONTENT_URI;
 

@@ -15,6 +15,7 @@ import net.dean.jraw.oauth.Credentials;
 import net.dean.jraw.oauth.OAuthHelper;
 
 import java.lang.ref.WeakReference;
+import java.util.UUID;
 
 /**
  * Created by Magic_Buddha on 12/26/2017.
@@ -39,22 +40,31 @@ public class AuthenticateBotTask extends AsyncTask<Void, Void, RedditClient> {
 
         Context context = weakContext.get();
         if (context != null) {
-            UserAgent userAgent = new UserAgent(
-                    context.getString(R.string.bot_platform),
-                    context.getString(R.string.bot_appId),
-                    context.getString(R.string.bot_version),
-                    context.getString(R.string.bot_reddit_username));
+//            UserAgent userAgent = new UserAgent(
+//                    context.getString(R.string.bot_platform),
+//                    context.getString(R.string.bot_appId),
+//                    context.getString(R.string.bot_version),
+//                    context.getString(R.string.bot_reddit_username));
+//
+//            Credentials credentials = Credentials.script(
+//                    context.getString(R.string.bot_reddit_username),
+//                    context.getString(R.string.bot_reddit_password),
+//                    context.getString(R.string.client_id),
+//                    context.getString(R.string.client_secret)
+//            );
+//
+//            NetworkAdapter adapter = new OkHttpNetworkAdapter(userAgent);
+//            reddit = OAuthHelper.automatic(adapter, credentials);
 
-            Credentials credentials = Credentials.script(
-                    context.getString(R.string.bot_reddit_username),
-                    context.getString(R.string.bot_reddit_password),
+            UserAgent userAgent = new UserAgent("WHATEVER");
+            Credentials credentials = Credentials.userless(
                     context.getString(R.string.client_id),
-                    context.getString(R.string.client_secret)
+                    context.getString(R.string.client_secret),
+                    UUID.randomUUID()
             );
 
             NetworkAdapter adapter = new OkHttpNetworkAdapter(userAgent);
             reddit = OAuthHelper.automatic(adapter, credentials);
-
         } else {
             Log.w(TAG, "Failed authenticating the bot. Context was null.");
         }
