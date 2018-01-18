@@ -9,8 +9,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.magicbuddha.redditorsdigest.R;
@@ -22,7 +24,7 @@ import butterknife.ButterKnife;
  * Created by Magic_Buddha on 12/28/2017.
  */
 
-public class SubredditListItemView extends LinearLayout {
+public class SubredditListItemView extends RelativeLayout {
 
     @BindView(R.id.title)
     TextView title;

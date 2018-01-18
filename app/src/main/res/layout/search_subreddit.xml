@@ -10,7 +10,7 @@
         android:id="@+id/search_app_bar"
         layout="@layout/app_bar_home"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,17 +21,19 @@
             android:id="@+id/input_layout_search"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="16dp"
+            android:layout_weight="1">
 
             <EditText
                 android:id="@+id/input_search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_search"
-                android:inputType="text"/>
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:singleLine="true" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -39,14 +41,14 @@
             android:id="@+id/search_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
             android:layout_gravity="center_vertical"
+            android:layout_marginEnd="16dp"
             android:background="@android:color/transparent"
             android:clickable="true"
             android:contentDescription="@string/search_button_content_description"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
-            android:src="@android:drawable/ic_menu_search"/>
+            android:src="@android:drawable/ic_menu_search" />
 
     </LinearLayout>
 
@@ -56,10 +58,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_layout_search"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/input_layout_search" />
 
     <ProgressBar
         android:id="@+id/search_progressbar"
@@ -69,19 +71,19 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_app_bar"/>
+        app:layout_constraintTop_toBottomOf="@+id/search_app_bar" />
 
     <TextView
         android:id="@+id/search_no_results"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:paddingStart="16dp"
         android:paddingEnd="16dp"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
         android:text="@string/search_no_content"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_layout_search"/>
+        app:layout_constraintTop_toBottomOf="@+id/input_layout_search" />
 
 </LinearLayout>
