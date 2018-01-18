@@ -8,10 +8,11 @@ import android.util.Log;
 import com.magicbuddha.redditorsdigest.R;
 
 import net.dean.jraw.RedditClient;
+import net.dean.jraw.http.NetworkAdapter;
+import net.dean.jraw.http.OkHttpNetworkAdapter;
 import net.dean.jraw.http.UserAgent;
-import net.dean.jraw.http.oauth.Credentials;
-import net.dean.jraw.http.oauth.OAuthData;
-import net.dean.jraw.http.oauth.OAuthException;
+import net.dean.jraw.oauth.Credentials;
+import net.dean.jraw.oauth.OAuthHelper;
 
 import java.lang.ref.WeakReference;
 import java.util.UUID;
@@ -39,29 +40,31 @@ public class AuthenticateBotTask extends AsyncTask<Void, Void, RedditClient> {
 
         Context context = weakContext.get();
         if (context != null) {
-            UserAgent userAgent = UserAgent.of(
-                    context.getString(R.string.bot_platform),
-                    context.getString(R.string.bot_appId),
-                    context.getString(R.string.bot_version),
-                    context.getString(R.string.bot_reddit_username));
+//            UserAgent userAgent = new UserAgent(
+//                    context.getString(R.string.bot_platform),
+//                    context.getString(R.string.bot_appId),
+//                    context.getString(R.string.bot_version),
+//                    context.getString(R.string.bot_reddit_username));
+//
+//            Credentials credentials = Credentials.script(
+//                    context.getString(R.string.bot_reddit_username),
+//                    context.getString(R.string.bot_reddit_password),
+//                    context.getString(R.string.client_id),
+//                    context.getString(R.string.client_secret)
+//            );
+//
+//            NetworkAdapter adapter = new OkHttpNetworkAdapter(userAgent);
+//            reddit = OAuthHelper.automatic(adapter, credentials);
 
-            reddit = new RedditClient(userAgent);
-
+            UserAgent userAgent = new UserAgent("WHATEVER");
             Credentials credentials = Credentials.userless(
                     context.getString(R.string.client_id),
                     context.getString(R.string.client_secret),
                     UUID.randomUUID()
             );
 
-            try {
-                OAuthData authData = reddit.getOAuthHelper().easyAuth(credentials);
-
-                reddit.authenticate(authData);
-            } catch (OAuthException e) {
-                Log.w(TAG, e);
-                reddit = null;
-            }
-
+            NetworkAdapter adapter = new OkHttpNetworkAdapter(userAgent);
+            reddit = OAuthHelper.automatic(adapter, credentials);
         } else {
             Log.w(TAG, "Failed authenticating the bot. Context was null.");
         }
@@ -76,6 +79,11 @@ public class AuthenticateBotTask extends AsyncTask<Void, Void, RedditClient> {
     }
 
     public interface AuthenticateCallback {
+        /**
+         * Called then {@link RedditClient} is authenticated.
+         *
+         * @param reddit {@link RedditClient}. Null if authentication failed.
+         */
         void onAuthenticated(RedditClient reddit);
     }
 }
