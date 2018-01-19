@@ -44,7 +44,7 @@ public class SearchSubredditAdapter extends RecyclerView.Adapter<SearchSubreddit
                     public void onSubscribeClicked(boolean isSubscribed) {
                         int adapterPosition = getAdapterPosition();
                         if (listener != null) {
-                            listener.onClick(subreddits.get(adapterPosition));
+                            listener.onSubscribed(subreddits.get(adapterPosition), isSubscribed);
                         }
 
                         // think I can just call notifydatasetchanged instead of directly setting view stuff
@@ -53,18 +53,8 @@ public class SearchSubredditAdapter extends RecyclerView.Adapter<SearchSubreddit
 
                         // write to content provider?
                         if (isSubscribed) {
-                            ContentValues cv = new ContentValues();
-                            cv.put(SubscriptionsContract.SubscriptionEntity.SUBSCRIPTION_COLUMN, subreddits.get(adapterPosition).getName());
-
-                            context.getContentResolver().insert(
-                                    SubscriptionsContract.SubscriptionEntity.CONTENT_URI, cv);
                             subscriptions.add(subreddits.get(adapterPosition).getName());
                         } else {
-                            Uri unsubscribeUri = SubscriptionsContract.SubscriptionEntity.CONTENT_URI.buildUpon()
-                                    .appendPath(subreddits.get(adapterPosition).getName())
-                                    .build();
-
-                            context.getContentResolver().delete(unsubscribeUri, null, null);
                             subscriptions.remove(subreddits.get(adapterPosition).getName());
                         }
                     }
@@ -101,6 +91,6 @@ public class SearchSubredditAdapter extends RecyclerView.Adapter<SearchSubreddit
     }
 
     public interface SubredditAdapterListener {
-        void onClick(Subreddit subreddit);
+        void onSubscribed(Subreddit subreddit, boolean subscribed);
     }
 }

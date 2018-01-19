@@ -12,7 +12,7 @@ public class SubscriptionsDBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "subscriptions.db";
 
-    private static final int VERSION = 2;
+    private static final int VERSION = 3;
 
     public SubscriptionsDBHelper(Context context) {
         super(context, DATABASE_NAME, null, VERSION);

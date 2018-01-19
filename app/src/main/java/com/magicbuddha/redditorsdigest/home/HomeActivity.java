@@ -1,6 +1,5 @@
 package com.magicbuddha.redditorsdigest.home;
 
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -14,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.magicbuddha.redditorsdigest.R;
 import com.magicbuddha.redditorsdigest.data.SubscriptionsContract;
@@ -25,6 +25,7 @@ import com.magicbuddha.redditorsdigest.search.SearchSubredditActivity;
 import net.dean.jraw.RedditClient;
 import net.dean.jraw.models.Submission;
 import net.dean.jraw.models.Subreddit;
+import net.dean.jraw.pagination.DefaultPaginator;
 import net.dean.jraw.references.SubredditReference;
 
 import java.lang.ref.WeakReference;
@@ -34,7 +35,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HomeActivity extends AppCompatActivity implements AuthenticateBotTask.AuthenticateCallback, GetSubredditsTask.SubredditsCallback{
+public class HomeActivity extends AppCompatActivity implements AuthenticateBotTask.AuthenticateCallback, GetSubredditsTask.SubredditsCallback {
+
+    private static final String TAG = HomeActivity.class.getCanonicalName();
 
     @BindView(R.id.fragment_container)
     FrameLayout fragmentContainer;
@@ -60,19 +63,6 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
         if (savedInstanceState == null) {
             new AuthenticateBotTask(new WeakReference<>(getApplicationContext()), this).execute();
             setLoading(true);
-
-            subscriptions = getSubscriptions();
-            if (subscriptions.size() == 0) {
-                NoSubscriptionsFragment fragment = NoSubscriptionsFragment.getInstance(null);
-
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.fragment_container, fragment)
-                        .commit();
-            } else {
-//                 get subreddits
-//                 setup viewpager?
-
-            }
         }
     }
 
@@ -123,17 +113,27 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
     @Override
     public void onAuthenticated(RedditClient redditClient) {
         if (redditClient == null) {
-            Log.w("ROKAS", "Reddit is null");
-        } else {
-            Log.w("ROKAS", "Reddit is NOT null");
-            Reddit reddit = Reddit.getInstance();
-
-            reddit.setRedditClient(redditClient);
+            Log.w(TAG, "Reddit is null");
+            Toast.makeText(this, "Could not authenticate at this time. Please try later.", Toast.LENGTH_SHORT).show();
+            setLoading(false);
+            return;
         }
+
+        Reddit reddit = Reddit.getInstance();
+        reddit.setRedditClient(redditClient);
 
         setLoading(false);
 
-        new GetSubredditsTask(this).execute(subscriptions.toArray(new String[0]));
+        subscriptions = getSubscriptions();
+        if (subscriptions.size() == 0) {
+            NoSubscriptionsFragment fragment = NoSubscriptionsFragment.getInstance(null);
+
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_container, fragment)
+                    .commit();
+        } else {
+            new GetSubredditsTask(this).execute(subscriptions.toArray(new String[0]));
+        }
     }
 
     private void setLoading(boolean isLoading) {
@@ -157,7 +157,7 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
 
         List<String> subscriptions = new ArrayList<String>();
         result.moveToFirst();
-        while(!result.isAfterLast()) {
+        while (!result.isAfterLast()) {
             subscriptions.add(result.getString(result.getColumnIndex(SubscriptionsContract.SubscriptionEntity.SUBSCRIPTION_COLUMN))); //add the item
             result.moveToNext();
         }
@@ -168,5 +168,7 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
     @Override
     public void onComplete(List<Subreddit> subreddits) {
         Log.w("ROKASSS", subreddits.get(0).getFullName());
+
+//        subreddits.get(0).toReference(Reddit.getInstance().getRedditClient()).posts().build().accumulateMerged(DefaultPaginator.RECOMMENDED_MAX_LIMIT).get(0).getId();
     }
 }
