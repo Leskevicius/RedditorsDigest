@@ -3,6 +3,7 @@ package com.magicbuddha.redditorsdigest.home;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -21,12 +22,10 @@ import com.magicbuddha.redditorsdigest.reddit.AuthenticateBotTask;
 import com.magicbuddha.redditorsdigest.reddit.GetSubredditsTask;
 import com.magicbuddha.redditorsdigest.reddit.Reddit;
 import com.magicbuddha.redditorsdigest.search.SearchSubredditActivity;
+import com.magicbuddha.redditorsdigest.submissions.PictureSubmissionFragment;
 
 import net.dean.jraw.RedditClient;
-import net.dean.jraw.models.Submission;
 import net.dean.jraw.models.Subreddit;
-import net.dean.jraw.pagination.DefaultPaginator;
-import net.dean.jraw.references.SubredditReference;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -71,11 +70,17 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
     private void showContent() {
         subscriptions = getSubscriptions();
         if (subscriptions.size() == 0) {
-            NoSubscriptionsFragment fragment = NoSubscriptionsFragment.getInstance(null);
+            new Handler().post(new Runnable() {
+                @Override
+                public void run() {
+                    NoSubscriptionsFragment fragment = NoSubscriptionsFragment.getInstance(null);
 
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, fragment)
-                    .commit();
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, fragment)
+                            .addToBackStack(null)
+                            .commit();
+                }
+            });
         } else {
             new GetSubredditsTask(this).execute(subscriptions.toArray(new String[0]));
             setLoading(true);
@@ -122,6 +127,7 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
             } else if (resultCode == SearchSubredditActivity.RESULT_NEED_UPDATE) {
                 // subscriptions change, update the adapter for submissions
                 Snackbar.make(homeLayout, "Updated needed.", Snackbar.LENGTH_SHORT).show();
+                showContent();
             }
         }
     }
@@ -174,9 +180,16 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
 
     @Override
     public void onComplete(List<Subreddit> subreddits) {
-        Log.w("ROKASSS", subreddits.get(0).getFullName());
+        Log.w("ROKASSS", subreddits.get(0).getId());
         setLoading(false);
 
-//        subreddits.get(0).toReference(Reddit.getInstance().getRedditClient()).posts().build().accumulateMerged(DefaultPaginator.RECOMMENDED_MAX_LIMIT).get(0).getId();
+        PictureSubmissionFragment ps = PictureSubmissionFragment.getInstance(subreddits.get(0).getId());
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, ps)
+                .addToBackStack(null)
+                .commit();
+
+        //        subreddits.get(0).toReference(Reddit.getInstance().getRedditClient()).posts().build().accumulateMerged(DefaultPaginator.RECOMMENDED_MAX_LIMIT).get(0).getId();
     }
 }

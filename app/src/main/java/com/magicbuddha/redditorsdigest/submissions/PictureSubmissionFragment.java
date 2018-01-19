@@ -1,10 +1,11 @@
 package com.magicbuddha.redditorsdigest.submissions;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +13,8 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
 import com.magicbuddha.redditorsdigest.R;
-import com.magicbuddha.redditorsdigest.reddit.Reddit;
 
-import net.dean.jraw.RedditClient;
 import net.dean.jraw.models.Submission;
-import net.dean.jraw.references.SubmissionReference;
 import net.dean.jraw.tree.RootCommentNode;
 
 import butterknife.BindView;
@@ -26,7 +24,7 @@ import butterknife.ButterKnife;
  * Created by Magic_Buddha on 1/17/2018.
  */
 
-public class PictureSubmission extends Fragment implements GetSubmissionDataTask.SubmissionDataCallback {
+public class PictureSubmissionFragment extends Fragment implements GetSubmissionDataTask.SubmissionDataCallback {
     protected Submission submission;
     protected RootCommentNode rootCommentNode;
 
@@ -41,12 +39,12 @@ public class PictureSubmission extends Fragment implements GetSubmissionDataTask
 
     private static final String SUBMISSION_ID = "submissionId";
 
-    public static PictureSubmission getInstance(String submissionId) {
+    public static PictureSubmissionFragment getInstance(String submissionId) {
         Bundle bundle = new Bundle();
         bundle.putString(SUBMISSION_ID, submissionId);
-        PictureSubmission pictureSubmission = new PictureSubmission();
-        pictureSubmission.setArguments(bundle);
-        return pictureSubmission;
+        PictureSubmissionFragment pictureSubmissionFragment = new PictureSubmissionFragment();
+        pictureSubmissionFragment.setArguments(bundle);
+        return pictureSubmissionFragment;
     }
 
     @Nullable
@@ -65,7 +63,7 @@ public class PictureSubmission extends Fragment implements GetSubmissionDataTask
         fob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(PictureSubmission.this.container, "Fob clicked!", Snackbar.LENGTH_SHORT);
+                Log.w("Rokas", "Fab Clicked");
             }
         });
         return view;

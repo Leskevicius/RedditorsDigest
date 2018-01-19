@@ -1,13 +1,10 @@
 package com.magicbuddha.redditorsdigest.search;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.magicbuddha.redditorsdigest.data.SubscriptionsContract;
 import com.magicbuddha.redditorsdigest.views.SubredditListItemView;
 
 import net.dean.jraw.models.Subreddit;
@@ -47,11 +44,7 @@ public class SearchSubredditAdapter extends RecyclerView.Adapter<SearchSubreddit
                             listener.onSubscribed(subreddits.get(adapterPosition), isSubscribed);
                         }
 
-                        // think I can just call notifydatasetchanged instead of directly setting view stuff
-                        // not sure whats the best approach.
                         view.setSubscribed(isSubscribed);
-
-                        // write to content provider?
                         if (isSubscribed) {
                             subscriptions.add(subreddits.get(adapterPosition).getName());
                         } else {
