@@ -64,14 +64,15 @@ public class SearchSubredditActivity extends AppCompatActivity implements Search
     TextView noResultsView;
 
     private SearchSubredditAdapter adapter;
-
     private ArrayList<String> subscriptionsChanged;
+    private boolean searchClicked;
 
     public static final int REQUEST_CODE = 37;
     public static final int RESULT_NEED_UPDATE = -2;
 
-    private static final String SUBSCRIPTIONS_CHANGED= "subscriptionsChanged";
+    private static final String SUBSCRIPTIONS_CHANGED = "subscriptionsChanged";
     private static final String SEARCH_TEXT = "searchText";
+    private static final String SEARCH_CLICKED = "searchClicked";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,6 +90,7 @@ public class SearchSubredditActivity extends AppCompatActivity implements Search
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                searchClicked = true;
                 search(input.getText().toString());
             }
         });
@@ -112,11 +114,12 @@ public class SearchSubredditActivity extends AppCompatActivity implements Search
         recyclerView.setAdapter(adapter);
 
         if (savedInstanceState != null) {
-            subscriptionsChanged = savedInstanceState.getStringArrayList(SUBSCRIPTIONS_CHANGED);
+            subscriptionsChanged = savedInstanceState.containsKey(SUBSCRIPTIONS_CHANGED) ? savedInstanceState.getStringArrayList(SUBSCRIPTIONS_CHANGED) : new ArrayList<String>();
+            searchClicked = savedInstanceState.getBoolean(SEARCH_CLICKED);
 
             String searchText = savedInstanceState.getString(SEARCH_TEXT, null);
 
-            if (!TextUtils.isEmpty(searchText)) {
+            if (!TextUtils.isEmpty(searchText) && searchClicked) {
                 search(searchText);
             }
         } else {
@@ -133,6 +136,8 @@ public class SearchSubredditActivity extends AppCompatActivity implements Search
         if (!TextUtils.isEmpty(input.getText().toString())) {
             outState.putString(SEARCH_TEXT, input.getText().toString());
         }
+
+        outState.putBoolean(SEARCH_CLICKED, searchClicked);
 
         super.onSaveInstanceState(outState);
     }

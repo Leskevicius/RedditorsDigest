@@ -63,6 +63,22 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
         if (savedInstanceState == null) {
             new AuthenticateBotTask(new WeakReference<>(getApplicationContext()), this).execute();
             setLoading(true);
+        } else {
+            fragmentContainer.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void showContent() {
+        subscriptions = getSubscriptions();
+        if (subscriptions.size() == 0) {
+            NoSubscriptionsFragment fragment = NoSubscriptionsFragment.getInstance(null);
+
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_container, fragment)
+                    .commit();
+        } else {
+            new GetSubredditsTask(this).execute(subscriptions.toArray(new String[0]));
+            setLoading(true);
         }
     }
 
@@ -124,16 +140,7 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
 
         setLoading(false);
 
-        subscriptions = getSubscriptions();
-        if (subscriptions.size() == 0) {
-            NoSubscriptionsFragment fragment = NoSubscriptionsFragment.getInstance(null);
-
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, fragment)
-                    .commit();
-        } else {
-            new GetSubredditsTask(this).execute(subscriptions.toArray(new String[0]));
-        }
+        showContent();
     }
 
     private void setLoading(boolean isLoading) {
@@ -155,7 +162,7 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
                 null
         );
 
-        List<String> subscriptions = new ArrayList<String>();
+        List<String> subscriptions = new ArrayList<>();
         result.moveToFirst();
         while (!result.isAfterLast()) {
             subscriptions.add(result.getString(result.getColumnIndex(SubscriptionsContract.SubscriptionEntity.SUBSCRIPTION_COLUMN))); //add the item
@@ -168,6 +175,7 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
     @Override
     public void onComplete(List<Subreddit> subreddits) {
         Log.w("ROKASSS", subreddits.get(0).getFullName());
+        setLoading(false);
 
 //        subreddits.get(0).toReference(Reddit.getInstance().getRedditClient()).posts().build().accumulateMerged(DefaultPaginator.RECOMMENDED_MAX_LIMIT).get(0).getId();
     }
