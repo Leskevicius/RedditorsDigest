@@ -1,11 +1,14 @@
 package com.magicbuddha.redditorsdigest.submissions;
 
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,7 +77,14 @@ public class PictureSubmissionFragment extends Fragment implements GetSubmission
             }
         });
 
-        adapter = new SubmissionAdapter(getContext());
+        Resources resources = getResources();
+        Configuration config = resources.getConfiguration();
+        DisplayMetrics dm = resources.getDisplayMetrics();
+
+        double screenWidthInPixels = (double) config.screenWidthDp * dm.density;
+        double screenHeightInPixels = screenWidthInPixels * dm.heightPixels / dm.widthPixels;
+
+        adapter = new SubmissionAdapter(getContext(), screenHeightInPixels * 0.5f);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
         return view;

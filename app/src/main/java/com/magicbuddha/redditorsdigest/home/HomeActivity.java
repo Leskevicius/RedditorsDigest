@@ -26,7 +26,6 @@ import com.magicbuddha.redditorsdigest.search.SearchSubredditActivity;
 import com.magicbuddha.redditorsdigest.submissions.PictureSubmissionFragment;
 
 import net.dean.jraw.RedditClient;
-import net.dean.jraw.models.Subreddit;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -51,7 +50,6 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
     @BindView(R.id.fragment_viewpager)
     ViewPager viewPager;
 
-    private List<Subreddit> subreddits;
     private List<String> subscriptions;
     private SubmissionPagerAdapter adapter;
 
@@ -86,11 +84,13 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
                             .replace(R.id.fragment_container, fragment)
                             .addToBackStack(null)
                             .commit();
+
+                    setLoading(false);
+                    showFragment();
                 }
             });
-            setLoading(false);
+
         } else {
-            setLoading(true);
             new GetSubredditsTask(this).execute(subscriptions.toArray(new String[0]));
         }
     }
@@ -135,6 +135,7 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
             } else if (resultCode == SearchSubredditActivity.RESULT_NEED_UPDATE) {
                 // subscriptions change, update the adapter for submissions
                 Snackbar.make(homeLayout, "Updated needed.", Snackbar.LENGTH_SHORT).show();
+                setLoading(true);
                 showContent();
             }
         }
@@ -158,13 +159,21 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
     private void setLoading(boolean isLoading) {
         if (isLoading) {
             progressBar.setVisibility(View.VISIBLE);
-//            fragmentContainer.setVisibility(View.INVISIBLE);
+            fragmentContainer.setVisibility(View.INVISIBLE);
             viewPager.setVisibility(View.INVISIBLE);
         } else {
             progressBar.setVisibility(View.GONE);
-//            fragmentContainer.setVisibility(View.VISIBLE);
-            viewPager.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void showPager() {
+        fragmentContainer.setVisibility(View.INVISIBLE);
+        viewPager.setVisibility(View.VISIBLE);
+    }
+
+    private void showFragment() {
+        viewPager.setVisibility(View.INVISIBLE);
+        fragmentContainer.setVisibility(View.VISIBLE);
     }
 
     private List<String> getSubscriptions() {
@@ -195,5 +204,6 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
         viewPager.setAdapter(adapter);
 
         setLoading(false);
+        showPager();
     }
 }

@@ -20,22 +20,24 @@
         android:id="@+id/fragment_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/home_app_bar"
         app:layout_constraintHorizontal_weight="1"
-        android:visibility="gone"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/home_app_bar" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/fragment_viewpager"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/home_app_bar"
-        android:visibility="gone"/>
+        app:layout_constraintTop_toBottomOf="@+id/home_app_bar">
+
+    </android.support.v4.view.ViewPager>
 
     <ProgressBar
         android:id="@+id/home_progressbar"
@@ -45,9 +47,9 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/home_app_bar"
         app:layout_constraintBottom_toBottomOf="@+id/fragment_container"
         app:layout_constraintEnd_toEndOf="@+id/fragment_container"
-        app:layout_constraintStart_toStartOf="@+id/fragment_container" />
+        app:layout_constraintStart_toStartOf="@+id/fragment_container"
+        app:layout_constraintTop_toBottomOf="@+id/home_app_bar" />
 
 </android.support.constraint.ConstraintLayout>

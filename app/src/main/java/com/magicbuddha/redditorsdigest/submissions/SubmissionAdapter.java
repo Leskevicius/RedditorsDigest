@@ -1,8 +1,10 @@
 package com.magicbuddha.redditorsdigest.submissions;
 
 import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -28,16 +30,18 @@ public class SubmissionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private Submission submission;
     private List<CommentNode<PublicContribution<?>>> list;
+    private double halfScreenPx;
 
     private Context context;
 
-    public SubmissionAdapter(Submission submission, Context context) {
+    public SubmissionAdapter(Context context, Submission submission, double halfScreenPx) {
         this.submission = submission;
         this.context = context;
+        this.halfScreenPx = halfScreenPx;
     }
 
-    public SubmissionAdapter(Context context) {
-        this.context = context;
+    public SubmissionAdapter(Context context, double halfScreenPx) {
+        this(context, null, halfScreenPx);
     }
 
     public class CommentViewHolder extends RecyclerView.ViewHolder {
@@ -89,7 +93,10 @@ public class SubmissionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             viewHolder.view.setAuthor(context.getString(R.string.author_prefix) + getItem(position).getSubject().getAuthor());
             viewHolder.view.setDepth(getItem(position).getDepth());
         } else if (holder instanceof ContentPictureViewHolder) {
-            ((ContentPictureViewHolder) holder).view.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            ((ContentPictureViewHolder) holder).view.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.height = (int) halfScreenPx;
+            ((ContentPictureViewHolder) holder).view.setLayoutParams(params);
             Glide.with(context)
                     .load(submission.getUrl())
                     .into(((ContentPictureViewHolder) holder).view);
