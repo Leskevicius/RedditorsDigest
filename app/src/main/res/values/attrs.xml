@@ -5,4 +5,9 @@
         <attr name="titleText" format="string" />
         <attr name="subscribed" format="boolean" />
     </declare-styleable>
+
+    <declare-styleable name="CommentView">
+        <attr name="depth" format="integer" />
+        <attr name="text" format="string" />
+    </declare-styleable>
 </resources>

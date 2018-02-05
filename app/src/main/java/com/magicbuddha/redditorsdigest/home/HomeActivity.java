@@ -179,17 +179,14 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
     }
 
     @Override
-    public void onComplete(List<Subreddit> subreddits) {
-        Log.w("ROKASSS", subreddits.get(0).getId());
+    public void onComplete(List<List<String>> submissionsBySubredditList) {
         setLoading(false);
 
-        PictureSubmissionFragment ps = PictureSubmissionFragment.getInstance(subreddits.get(0).getId());
+        PictureSubmissionFragment ps = PictureSubmissionFragment.getInstance(submissionsBySubredditList.get(0).get(5));
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, ps)
                 .addToBackStack(null)
                 .commit();
-
-        //        subreddits.get(0).toReference(Reddit.getInstance().getRedditClient()).posts().build().accumulateMerged(DefaultPaginator.RECOMMENDED_MAX_LIMIT).get(0).getId();
     }
 }

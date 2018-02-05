@@ -8,6 +8,8 @@ import android.util.Log;
 import net.dean.jraw.RedditClient;
 import net.dean.jraw.models.Submission;
 import net.dean.jraw.models.Subreddit;
+import net.dean.jraw.models.SubredditSort;
+import net.dean.jraw.pagination.DefaultPaginator;
 import net.dean.jraw.pagination.Paginator;
 import net.dean.jraw.references.SubredditReference;
 
@@ -19,7 +21,7 @@ import java.util.List;
  * Created by Magic_Buddha on 12/26/2017.
  */
 
-public class GetSubredditsTask extends AsyncTask<String, Void, List<Subreddit>> {
+public class GetSubredditsTask extends AsyncTask<String, Void, List<List<String>>> {
 
     private static final String TAG = GetSubredditsTask.class.getCanonicalName();
 
@@ -31,38 +33,47 @@ public class GetSubredditsTask extends AsyncTask<String, Void, List<Subreddit>> 
     }
 
     @Override
-    protected List<Subreddit> doInBackground(String... strings) {
+    protected List<List<String>> doInBackground(String... strings) {
         RedditClient reddit = Reddit.getInstance().getRedditClient();
         List<SubredditReference> subredditReferences = new ArrayList<>();
-        List<Subreddit> subreddits = new ArrayList<>();
+        List<List<String>> submissionsBySubredditList = new ArrayList<>();
+        try {
 
-            try {
-
-                for (String subredditName : strings) {
-                    subredditReferences.add(reddit.subreddit(subredditName));
-                }
-
-                subreddits.add(subredditReferences.get(0).about());
-
-            } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
+            for (String subredditName : strings) {
+                subredditReferences.add(reddit.subreddit(subredditName));
             }
 
-        return subreddits;
+            for (SubredditReference sr : subredditReferences) {
+                List<String> submissionIdList = new ArrayList<>();
+                DefaultPaginator<Submission> paginator = sr.posts()
+                        .sorting(SubredditSort.HOT)
+                        .limit(10)
+                        .build();
+
+                List<Submission> submissionList = paginator.accumulateMerged(1);
+
+                for (Submission s : submissionList) {
+                    submissionIdList.add(s.getId());
+                }
+
+                Log.w(TAG, submissionIdList.toString());
+
+                submissionsBySubredditList.add(submissionIdList);
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+        return submissionsBySubredditList;
     }
 
     @Override
-    protected void onPostExecute(List<Subreddit> subreddits) {
-        super.onPostExecute(subreddits);
-        callback.onComplete(subreddits);
+    protected void onPostExecute(List<List<String>> submissionsBySubredditList) {
+        super.onPostExecute(submissionsBySubredditList);
+        callback.onComplete(submissionsBySubredditList);
     }
 
     public interface SubredditsCallback {
-        /**
-         * Called when search for subreddits is complete.
-         *
-         * @param subreddits {@link List<Submission>} of subreddits found.
-         */
-        void onComplete(List<Subreddit> subreddits);
+        void onComplete(List<List<String>> submissionsBySubredditList);
     }
 }
