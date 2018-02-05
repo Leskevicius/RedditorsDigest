@@ -18,10 +18,7 @@ import com.magicbuddha.redditorsdigest.R;
 import net.dean.jraw.models.PublicContribution;
 import net.dean.jraw.models.Submission;
 import net.dean.jraw.tree.CommentNode;
-import net.dean.jraw.tree.RootCommentNode;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -32,8 +29,9 @@ import butterknife.ButterKnife;
  */
 
 public class PictureSubmissionFragment extends Fragment implements GetSubmissionDataTask.SubmissionDataCallback {
+    protected String submissionId;
     protected Submission submission;
-    protected RootCommentNode rootCommentNode;
+    protected List<CommentNode<PublicContribution<?>>> comments;
     protected SubmissionAdapter adapter;
 
     @BindView(R.id.submission_fob)
@@ -62,6 +60,7 @@ public class PictureSubmissionFragment extends Fragment implements GetSubmission
         ButterKnife.bind(this, view);
 
         Bundle bundle = getArguments();
+        submissionId = bundle.getString(SUBMISSION_ID);
 
         if (bundle != null) {
             new GetSubmissionDataTask(this).execute(bundle.getString(SUBMISSION_ID));
@@ -81,18 +80,15 @@ public class PictureSubmissionFragment extends Fragment implements GetSubmission
         return view;
     }
 
+    public String getSubmissionId() {
+        return submissionId;
+    }
+
     @Override
-    public void onComplete(Submission submission, RootCommentNode rootCommentNode) {
+    public void onComplete(Submission submission, List<CommentNode<PublicContribution<?>>> comments) {
         this.submission = submission;
-        this.rootCommentNode = rootCommentNode;
+        this.comments = comments;
         progressBar.setVisibility(View.GONE);
-
-        Iterator<CommentNode<PublicContribution<?>>> i = rootCommentNode.walkTree().iterator();
-        List<CommentNode<PublicContribution<?>>> list = new ArrayList<>();
-        while (i.hasNext()) {
-            list.add(i.next());
-        }
-
-        adapter.setData(list, submission);
+        adapter.setData(comments, submission);
     }
 }

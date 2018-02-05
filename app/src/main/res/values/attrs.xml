@@ -9,5 +9,6 @@
     <declare-styleable name="CommentView">
         <attr name="depth" format="integer" />
         <attr name="text" format="string" />
+        <attr name="subtext" format="string"/>
     </declare-styleable>
 </resources>

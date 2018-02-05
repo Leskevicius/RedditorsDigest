@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -47,8 +48,12 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
     @BindView(R.id.home_progressbar)
     ProgressBar progressBar;
 
+    @BindView(R.id.fragment_viewpager)
+    ViewPager viewPager;
+
     private List<Subreddit> subreddits;
     private List<String> subscriptions;
+    private SubmissionPagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +63,8 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
         setSupportActionBar(toolbar);
 
         ButterKnife.bind(this);
+
+        adapter = new SubmissionPagerAdapter(getSupportFragmentManager());
 
         if (savedInstanceState == null) {
             new AuthenticateBotTask(new WeakReference<>(getApplicationContext()), this).execute();
@@ -81,9 +88,10 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
                             .commit();
                 }
             });
+            setLoading(false);
         } else {
-            new GetSubredditsTask(this).execute(subscriptions.toArray(new String[0]));
             setLoading(true);
+            new GetSubredditsTask(this).execute(subscriptions.toArray(new String[0]));
         }
     }
 
@@ -144,18 +152,18 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
         Reddit reddit = Reddit.getInstance();
         reddit.setRedditClient(redditClient);
 
-        setLoading(false);
-
         showContent();
     }
 
     private void setLoading(boolean isLoading) {
         if (isLoading) {
             progressBar.setVisibility(View.VISIBLE);
-            fragmentContainer.setVisibility(View.INVISIBLE);
+//            fragmentContainer.setVisibility(View.INVISIBLE);
+            viewPager.setVisibility(View.INVISIBLE);
         } else {
             progressBar.setVisibility(View.GONE);
-            fragmentContainer.setVisibility(View.VISIBLE);
+//            fragmentContainer.setVisibility(View.VISIBLE);
+            viewPager.setVisibility(View.VISIBLE);
         }
     }
 
@@ -180,13 +188,12 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
 
     @Override
     public void onComplete(List<List<String>> submissionsBySubredditList) {
-        setLoading(false);
 
         PictureSubmissionFragment ps = PictureSubmissionFragment.getInstance(submissionsBySubredditList.get(0).get(5));
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, ps)
-                .addToBackStack(null)
-                .commit();
+        adapter.setData(submissionsBySubredditList.get(0));
+        viewPager.setAdapter(adapter);
+
+        setLoading(false);
     }
 }

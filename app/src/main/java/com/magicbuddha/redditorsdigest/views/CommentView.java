@@ -2,7 +2,6 @@ package com.magicbuddha.redditorsdigest.views;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.v7.widget.LinearLayoutManager;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +21,9 @@ import butterknife.ButterKnife;
 public class CommentView extends RelativeLayout {
     @BindView(R.id.comment_body)
     TextView bodyView;
+
+    @BindView(R.id.comment_author)
+    TextView authorView;
 
     @BindView(R.id.line_container)
     LinearLayout lineContainer;
@@ -56,16 +58,20 @@ public class CommentView extends RelativeLayout {
                 0, 0);
 
         String body;
+        String subtext;
         int depth;
 
         try {
             body = a.getString(R.styleable.CommentView_text);
+            subtext = a.getString(R.styleable.CommentView_subtext);
             depth = a.getInt(R.styleable.CommentView_depth, 0);
         } finally {
             a.recycle();
         }
 
         bodyView.setText(body);
+        authorView.setText(subtext);
+
         for (int i = 0; i < depth; i++) {
             View view = LayoutInflater.from(context).inflate(R.layout.vertical_line, lineContainer, false);
             lineContainer.addView(view);
@@ -86,12 +92,17 @@ public class CommentView extends RelativeLayout {
         for (int i = 0; i < depth; i++) {
             LayoutInflater.from(getContext()).inflate(R.layout.vertical_line, lineContainer);
         }
-
-        invalidate();
-        requestLayout();
     }
 
     public int getDepth() {
         return depth;
+    }
+
+    public void setAuthor(String author) {
+        authorView.setText(author);
+    }
+
+    public String getAuthor() {
+        return authorView.getText().toString();
     }
 }

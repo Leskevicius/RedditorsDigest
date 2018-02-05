@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.magicbuddha.redditorsdigest.R;
 import com.magicbuddha.redditorsdigest.views.CommentView;
 
 import net.dean.jraw.models.PublicContribution;
@@ -85,8 +86,8 @@ public class SubmissionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         if (holder instanceof CommentViewHolder) {
             CommentViewHolder viewHolder = (CommentViewHolder) holder;
             viewHolder.view.setBody(getItem(position).getSubject().getBody());
+            viewHolder.view.setAuthor(context.getString(R.string.author_prefix) + getItem(position).getSubject().getAuthor());
             viewHolder.view.setDepth(getItem(position).getDepth());
-            Log.w("ROKAS", getItem(position).getSubject().getAuthor() + "\nDepth: " + getItem(position).getDepth());
         } else if (holder instanceof ContentPictureViewHolder) {
             ((ContentPictureViewHolder) holder).view.setScaleType(ImageView.ScaleType.FIT_CENTER);
             Glide.with(context)
