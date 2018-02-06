@@ -48,7 +48,7 @@
             android:contentDescription="@string/search_button_content_description"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
-            android:src="@android:drawable/ic_menu_search" />
+            android:src="@drawable/ic_action_search" />
 
     </LinearLayout>
 
@@ -68,6 +68,8 @@
         android:layout_width="42dp"
         android:layout_height="42dp"
         android:visibility="gone"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -9,4 +9,5 @@
 
     <dimen name="subreddit_list_item_horizontal_margin">16dp</dimen>
     <dimen name="subreddit_list_item_vertical_margin">12dp</dimen>
+    <dimen name="comment_margins">8dp</dimen>
 </resources>

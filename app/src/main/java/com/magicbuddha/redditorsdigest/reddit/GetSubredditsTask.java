@@ -7,69 +7,73 @@ import android.util.Log;
 
 import net.dean.jraw.RedditClient;
 import net.dean.jraw.models.Submission;
+import net.dean.jraw.models.Subreddit;
+import net.dean.jraw.models.SubredditSort;
+import net.dean.jraw.pagination.DefaultPaginator;
+import net.dean.jraw.pagination.Paginator;
+import net.dean.jraw.references.SubredditReference;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Magic_Buddha on 12/26/2017.
  */
 
-public class GetSubredditsTask extends AsyncTask<String, Void, List<Submission>> {
+public class GetSubredditsTask extends AsyncTask<String, Void, List<List<String>>> {
 
     private static final String TAG = GetSubredditsTask.class.getCanonicalName();
 
     // used to retrieve bot info
-    private WeakReference<Context> weakContext;
     private SubredditsCallback callback;
-    private boolean allowNSFW;
 
-    public GetSubredditsTask(WeakReference<Context> weakContext, @NonNull SubredditsCallback callback, boolean allowNSFW) {
-        this.weakContext = weakContext;
+    public GetSubredditsTask(@NonNull SubredditsCallback callback) {
         this.callback = callback;
-        this.allowNSFW = allowNSFW;
     }
 
     @Override
-    protected List<Submission> doInBackground(String... strings) {
+    protected List<List<String>> doInBackground(String... strings) {
         RedditClient reddit = Reddit.getInstance().getRedditClient();
-        List<Submission> subreddits = null;
+        List<SubredditReference> subredditReferences = new ArrayList<>();
+        List<List<String>> submissionsBySubredditList = new ArrayList<>();
+        try {
 
-        Context context = weakContext.get();
-
-        if (context != null) {
-            try {
-
-//                SubredditPaginator paginator = new SubredditPaginator(reddit, "pics", "pcgaming");
-//                List<Listing<Submission>> submissionListing = paginator.accumulate(SubredditPaginator.RECOMMENDED_MAX_LIMIT);
-//
-//                subreddits = submissionListing.get(0).getChildren();
-//                for (Submission s : subreddits) {
-//                    Log.w("ROKAS", s.getTitle());
-//                }
-
-            } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
+            for (String subredditName : strings) {
+                subredditReferences.add(reddit.subreddit(subredditName));
             }
-        } else {
-            Log.w(TAG, "Failed find any subreddits. Context was null.");
-        }
 
-        return subreddits;
+            for (SubredditReference sr : subredditReferences) {
+                List<String> submissionIdList = new ArrayList<>();
+                DefaultPaginator<Submission> paginator = sr.posts()
+                        .sorting(SubredditSort.HOT)
+                        .limit(10)
+                        .build();
+
+                List<Submission> submissionList = paginator.accumulateMerged(1);
+
+                for (Submission s : submissionList) {
+                    submissionIdList.add(s.getId());
+                }
+
+                Log.w(TAG, submissionIdList.toString());
+
+                submissionsBySubredditList.add(submissionIdList);
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+        return submissionsBySubredditList;
     }
 
     @Override
-    protected void onPostExecute(List<Submission> subreddits) {
-        super.onPostExecute(subreddits);
-        callback.onComplete(subreddits);
+    protected void onPostExecute(List<List<String>> submissionsBySubredditList) {
+        super.onPostExecute(submissionsBySubredditList);
+        callback.onComplete(submissionsBySubredditList);
     }
 
     public interface SubredditsCallback {
-        /**
-         * Called when search for subreddits is complete.
-         *
-         * @param submissions {@link List<Submission>} of subreddits found.
-         */
-        void onComplete(List<Submission> submissions);
+        void onComplete(List<List<String>> submissionsBySubredditList);
     }
 }

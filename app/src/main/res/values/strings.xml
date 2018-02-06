@@ -15,4 +15,6 @@
     <string name="hint_search">Search</string>
     <string name="search_button_content_description">Search Button</string>
     <string name="search_no_content">No results were returned from reddit. Try searching again with a different keyword.</string>
+    <string name="author_prefix">By </string>
+    <string name="fontFamily">sans-serif</string>
 </resources>
