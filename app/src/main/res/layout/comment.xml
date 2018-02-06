@@ -1,33 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:parentTag="android.widget.RelativeLayout">
-
-    <TextView
-        android:id="@+id/comment_body"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/line_container"
-        android:layout_alignParentTop="true" />
-
-    <TextView
-        android:id="@+id/comment_author"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/comment_body"
-        android:layout_toEndOf="@id/line_container"
-        android:layout_alignParentBottom="true"
-        />
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    tools:parentTag="android.widget.LinearLayout">
 
     <LinearLayout
         android:id="@+id/line_container"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginStart="4dp"
         android:orientation="horizontal"
-        android:layout_alignTop="@id/comment_body"
-        android:layout_alignBottom="@id/comment_author"
-        android:layout_alignParentTop="true"/>
+        app:layout_constraintBottom_toBottomOf="@id/comment_author"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/comment_body">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/comment_body_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:id="@+id/comment_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@string/fontFamily"
+            android:textSize="15sp"
+            tools:text="If I only know!" />
+
+        <TextView
+            android:id="@+id/comment_author"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@string/fontFamily"
+            android:textColor="@color/grey"
+            android:textSize="13sp"
+            tools:text="By Tony" />
+
+    </LinearLayout>
+
+
 </merge>

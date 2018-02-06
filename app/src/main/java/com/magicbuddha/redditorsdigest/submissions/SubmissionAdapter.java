@@ -1,10 +1,8 @@
 package com.magicbuddha.redditorsdigest.submissions;
 
 import android.content.Context;
-import android.content.res.Configuration;
-import android.content.res.Resources;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -89,9 +87,13 @@ public class SubmissionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof CommentViewHolder) {
             CommentViewHolder viewHolder = (CommentViewHolder) holder;
+            viewHolder.view.setDepth(getItem(position).getDepth() - 1);
             viewHolder.view.setBody(getItem(position).getSubject().getBody());
-            viewHolder.view.setAuthor(context.getString(R.string.author_prefix) + getItem(position).getSubject().getAuthor());
-            viewHolder.view.setDepth(getItem(position).getDepth());
+            viewHolder.view.setAuthor(context.getString(R.string.author_prefix) + " " + getItem(position).getSubject().getAuthor() + "   points: " + getItem(position).getSubject().getScore());
+
+            if (position % 2 == 1) {
+                viewHolder.view.setCommentBackgroundColor(ContextCompat.getColor(context, R.color.odd_comment_color));
+            }
         } else if (holder instanceof ContentPictureViewHolder) {
             ((ContentPictureViewHolder) holder).view.setScaleType(ImageView.ScaleType.CENTER_CROP);
             ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);

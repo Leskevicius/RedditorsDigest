@@ -2,11 +2,13 @@ package com.magicbuddha.redditorsdigest.views;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
+import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.magicbuddha.redditorsdigest.R;
@@ -18,7 +20,7 @@ import butterknife.ButterKnife;
  * Created by Magic_Buddha on 2/4/2018.
  */
 
-public class CommentView extends RelativeLayout {
+public class CommentView extends LinearLayout {
     @BindView(R.id.comment_body)
     TextView bodyView;
 
@@ -28,7 +30,12 @@ public class CommentView extends RelativeLayout {
     @BindView(R.id.line_container)
     LinearLayout lineContainer;
 
+    @BindView(R.id.comment_body_container)
+    LinearLayout commentBodyContainer;
+
     private int depth;
+    private String text;
+    private String author;
 
     public CommentView(Context context) {
         super(context);
@@ -52,38 +59,45 @@ public class CommentView extends RelativeLayout {
         LayoutInflater.from(context).inflate(R.layout.comment, this);
         ButterKnife.bind(this, this);
 
+        LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
+                new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT));
+        setLayoutParams(linearParams);
+
         TypedArray a = context.getTheme().obtainStyledAttributes(
                 attrs,
                 R.styleable.CommentView,
                 0, 0);
 
-        String body;
-        String subtext;
         int depth;
 
         try {
-            body = a.getString(R.styleable.CommentView_text);
-            subtext = a.getString(R.styleable.CommentView_subtext);
+            text = a.getString(R.styleable.CommentView_text);
+            author = a.getString(R.styleable.CommentView_subtext);
             depth = a.getInt(R.styleable.CommentView_depth, 0);
         } finally {
             a.recycle();
         }
 
-        bodyView.setText(body);
-        authorView.setText(subtext);
 
         for (int i = 0; i < depth; i++) {
             View view = LayoutInflater.from(context).inflate(R.layout.vertical_line, lineContainer, false);
             lineContainer.addView(view);
         }
+
+        bodyView.setText(text);
+        authorView.setText(author);
     }
 
     public void setBody(String text) {
+        this.text = text;
         bodyView.setText(text);
+
     }
 
     public String getBody() {
-        return bodyView.getText().toString();
+        return text;
     }
 
     public void setDepth(int depth) {
@@ -104,5 +118,9 @@ public class CommentView extends RelativeLayout {
 
     public String getAuthor() {
         return authorView.getText().toString();
+    }
+
+    public void setCommentBackgroundColor(@ColorInt int colorId) {
+        commentBodyContainer.setBackgroundColor(colorId);
     }
 }

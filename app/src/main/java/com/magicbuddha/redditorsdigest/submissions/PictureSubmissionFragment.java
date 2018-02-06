@@ -1,7 +1,9 @@
 package com.magicbuddha.redditorsdigest.submissions;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -9,11 +11,9 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
 import com.magicbuddha.redditorsdigest.R;
@@ -47,6 +47,7 @@ public class PictureSubmissionFragment extends Fragment implements GetSubmission
     RecyclerView recyclerView;
 
     private static final String SUBMISSION_ID = "submissionId";
+    private static final String REDDIT_BASE_URL = "https://www.reddit.com";
 
     public static PictureSubmissionFragment getInstance(String submissionId) {
         Bundle bundle = new Bundle();
@@ -64,16 +65,13 @@ public class PictureSubmissionFragment extends Fragment implements GetSubmission
 
         Bundle bundle = getArguments();
         submissionId = bundle.getString(SUBMISSION_ID);
-
-        if (bundle != null) {
-            new GetSubmissionDataTask(this).execute(bundle.getString(SUBMISSION_ID));
-            progressBar.setVisibility(View.VISIBLE);
-        }
+        progressBar.setVisibility(View.VISIBLE);
 
         fob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.w("Rokas", "Fab Clicked");
+                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(REDDIT_BASE_URL + submission.getPermalink()));
+                startActivity(i);
             }
         });
 
@@ -87,6 +85,8 @@ public class PictureSubmissionFragment extends Fragment implements GetSubmission
         adapter = new SubmissionAdapter(getContext(), screenHeightInPixels * 0.5f);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
+
+        new GetSubmissionDataTask(this).execute(bundle.getString(SUBMISSION_ID));
         return view;
     }
 

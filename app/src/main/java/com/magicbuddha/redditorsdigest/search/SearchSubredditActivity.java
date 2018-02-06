@@ -120,6 +120,7 @@ public class SearchSubredditActivity extends AppCompatActivity implements Search
             String searchText = savedInstanceState.getString(SEARCH_TEXT, null);
 
             if (!TextUtils.isEmpty(searchText) && searchClicked) {
+                showNoResults(false);
                 search(searchText);
             }
         } else {
@@ -167,6 +168,8 @@ public class SearchSubredditActivity extends AppCompatActivity implements Search
             if (subreddits.size() == 0) {
                 showNoResults(true);
             }
+        } else {
+            showNoResults(true);
         }
         setLoading(false);
     }

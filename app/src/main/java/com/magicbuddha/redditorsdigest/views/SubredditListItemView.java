@@ -118,8 +118,8 @@ public class SubredditListItemView extends RelativeLayout {
     public void setSubscribed(boolean isSubscribed) {
         this.isSubscribed = isSubscribed;
         this.subscribeButton.setBackground(isSubscribed ?
-                ContextCompat.getDrawable(getContext(), R.drawable.ic_favorite_black_24dp) :
-                ContextCompat.getDrawable(getContext(), R.drawable.ic_favorite_border_black_24dp));
+                ContextCompat.getDrawable(getContext(), R.drawable.ic_favorite) :
+                ContextCompat.getDrawable(getContext(), R.drawable.ic_not_favorite));
     }
 
     public boolean isSubscribed() {
