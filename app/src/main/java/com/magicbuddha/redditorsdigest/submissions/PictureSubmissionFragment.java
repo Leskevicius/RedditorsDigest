@@ -99,6 +99,7 @@ public class PictureSubmissionFragment extends Fragment implements GetSubmission
         this.submission = submission;
         this.comments = comments;
         progressBar.setVisibility(View.GONE);
+        fob.setVisibility(View.VISIBLE);
         adapter.setData(comments, submission);
     }
 }
