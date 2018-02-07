@@ -17,4 +17,6 @@
     <string name="search_no_content">No results were returned from reddit. Try searching again with a different keyword.</string>
     <string name="author_prefix">By </string>
     <string name="fontFamily">sans-serif</string>
+    <string name="subreddit_prefix">/r/</string>
+    <string name="points">points</string>
 </resources>

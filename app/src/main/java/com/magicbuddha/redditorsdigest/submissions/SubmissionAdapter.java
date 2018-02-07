@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.magicbuddha.redditorsdigest.R;
 import com.magicbuddha.redditorsdigest.views.CommentView;
+import com.magicbuddha.redditorsdigest.views.SelfPostView;
 
 import net.dean.jraw.models.PublicContribution;
 import net.dean.jraw.models.Submission;
@@ -45,7 +46,7 @@ public class SubmissionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public class CommentViewHolder extends RecyclerView.ViewHolder {
         CommentView view;
 
-        public CommentViewHolder(View itemView) {
+        CommentViewHolder(View itemView) {
             super(itemView);
             if (itemView instanceof CommentView) {
                 view = (CommentView) itemView;
@@ -56,7 +57,7 @@ public class SubmissionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public class ContentPictureViewHolder extends RecyclerView.ViewHolder {
         ImageView view;
 
-        public ContentPictureViewHolder(View itemView) {
+        ContentPictureViewHolder(View itemView) {
             super(itemView);
             if (itemView instanceof ImageView) {
                 view = (ImageView) itemView;
@@ -65,8 +66,12 @@ public class SubmissionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     public class ContentSelfViewHolder extends RecyclerView.ViewHolder {
-        public ContentSelfViewHolder(View itemView) {
+        SelfPostView view;
+        ContentSelfViewHolder(View itemView) {
             super(itemView);
+            if (itemView instanceof SelfPostView) {
+                view = (SelfPostView) itemView;
+            }
         }
     }
 
@@ -77,7 +82,7 @@ public class SubmissionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         } else if (viewType == TYPE_CONTENT_PICTURE) {
             return new ContentPictureViewHolder(new ImageView(parent.getContext()));
         } else if (viewType == TYPE_CONTENT_SELF) {
-            return new ContentSelfViewHolder(new View(parent.getContext()));
+            return new ContentSelfViewHolder(new SelfPostView(parent.getContext()));
         }
 
         throw new RuntimeException("No type matching: " + viewType + ".");
@@ -86,10 +91,11 @@ public class SubmissionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof CommentViewHolder) {
+            CommentNode<PublicContribution<?>> item = getItem(position);
             CommentViewHolder viewHolder = (CommentViewHolder) holder;
-            viewHolder.view.setDepth(getItem(position).getDepth() - 1);
-            viewHolder.view.setBody(getItem(position).getSubject().getBody());
-            viewHolder.view.setAuthor(context.getString(R.string.author_prefix) + " " + getItem(position).getSubject().getAuthor() + "   points: " + getItem(position).getSubject().getScore());
+            viewHolder.view.setDepth(item.getDepth() - 1);
+            viewHolder.view.setBody(item.getSubject().getBody());
+            viewHolder.view.setAuthor(context.getString(R.string.author_prefix) + " " + item.getSubject().getAuthor() + "   points: " + item.getSubject().getScore());
 
             if (position % 2 == 1) {
                 viewHolder.view.setCommentBackgroundColor(ContextCompat.getColor(context, R.color.odd_comment_color));
@@ -104,6 +110,11 @@ public class SubmissionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     .into(((ContentPictureViewHolder) holder).view);
         } else if (holder instanceof ContentSelfViewHolder) {
             // build self post
+            ((ContentSelfViewHolder) holder).view.setTitle(submission.getTitle());
+            ((ContentSelfViewHolder) holder).view.setAuthor(context.getString(R.string.author_prefix) + " " + submission.getAuthor());
+            ((ContentSelfViewHolder) holder).view.setPoints(Integer.toString(submission.getScore()));
+            ((ContentSelfViewHolder) holder).view.setSubreddit(context.getString(R.string.subreddit_prefix) +submission.getSubreddit());
+            ((ContentSelfViewHolder) holder).view.setBody(submission.getSelfText());
         }
     }
 
