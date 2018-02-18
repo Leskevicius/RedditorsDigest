@@ -3,8 +3,6 @@ package com.magicbuddha.redditorsdigest.views;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
-import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;

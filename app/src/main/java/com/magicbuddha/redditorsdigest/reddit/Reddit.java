@@ -1,10 +1,6 @@
 package com.magicbuddha.redditorsdigest.reddit;
 
-import android.content.Context;
-
 import net.dean.jraw.RedditClient;
-
-import java.util.List;
 
 /**
  * Created by Magic_Buddha on 12/24/2017.

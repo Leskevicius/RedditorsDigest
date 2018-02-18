@@ -23,7 +23,6 @@ import android.widget.Toast;
 import com.magicbuddha.redditorsdigest.R;
 import com.magicbuddha.redditorsdigest.data.SubscriptionsContract;
 import com.magicbuddha.redditorsdigest.reddit.AuthenticateBotTask;
-import com.magicbuddha.redditorsdigest.reddit.GetSubmissionIdsTask;
 import com.magicbuddha.redditorsdigest.reddit.Reddit;
 import com.magicbuddha.redditorsdigest.reddit.SubredditProvider;
 import com.magicbuddha.redditorsdigest.search.SearchSubredditActivity;
@@ -107,7 +106,7 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .addToBackStack(null)
-                .commit();
+                .commitAllowingStateLoss();
 
         setLoading(false);
         showFragment();
@@ -147,7 +146,7 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
                 // subscriptions change, update the adapter for submissions
                 Snackbar.make(homeLayout, "Updated needed.", Snackbar.LENGTH_SHORT).show();
                 setLoading(true);
-                getSupportLoaderManager().initLoader(LOADER_ID, null, this);
+                getSupportLoaderManager().restartLoader(LOADER_ID, null, this);
             }
         }
     }

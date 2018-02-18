@@ -64,7 +64,6 @@ public class SubredditProvider implements GetSubmissionIdsTask.SubredditsCallbac
     @Override
     public void onComplete(List<List<String>> submissionsBySubredditList) {
         listener.onNextSubmissions(consolidate(submissionsBySubredditList));
-        listener = null;
     }
 
     private List<String> consolidate(List<List<String>> strings) {

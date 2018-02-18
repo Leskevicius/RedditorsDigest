@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.magicbuddha.redditorsdigest.R;
-import com.magicbuddha.redditorsdigest.reddit.Reddit;
 
 import net.dean.jraw.models.Submission;
 
