@@ -19,4 +19,5 @@
     <string name="fontFamily">sans-serif</string>
     <string name="subreddit_prefix">/r/</string>
     <string name="points">points</string>
+    <string name="no_comments">There are no comments for this submission.</string>
 </resources>
