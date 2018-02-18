@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.magicbuddha.redditorsdigest.submissions.PictureSubmissionFragment;
+import com.magicbuddha.redditorsdigest.submissions.SubmissionFragment;
 
 import java.util.List;
 
@@ -15,20 +15,25 @@ import java.util.List;
 public class SubmissionPagerAdapter extends FragmentStatePagerAdapter {
 
     private List<String> submissions;
+    private SubmissionPagerAdapterListener listener;
 
-    public SubmissionPagerAdapter(FragmentManager fm) {
+    public SubmissionPagerAdapter(FragmentManager fm, SubmissionPagerAdapterListener listener) {
         super(fm);
+        this.listener = listener;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return PictureSubmissionFragment.getInstance(submissions.get(position));
+        if (submissions.size() - (position + 1) <= 0) {
+            listener.requestSubmissions();
+        }
+        return SubmissionFragment.getInstance(submissions.get(position));
     }
 
     @Override
     public int getItemPosition(Object object) {
-        if (object instanceof PictureSubmissionFragment) {
-            PictureSubmissionFragment fragment = (PictureSubmissionFragment) object;
+        if (object instanceof SubmissionFragment) {
+            SubmissionFragment fragment = (SubmissionFragment) object;
             String subId = fragment.getSubmissionId();
 
             int position = submissions.indexOf(subId);
@@ -51,5 +56,19 @@ public class SubmissionPagerAdapter extends FragmentStatePagerAdapter {
     public void setData(List<String> submissionIds) {
         this.submissions = submissionIds;
         notifyDataSetChanged();
+    }
+
+    public void addData(List<String> submissionIds) {
+        if (this.submissions == null) {
+            setData(submissionIds);
+            return;
+        }
+
+        this.submissions.addAll(submissionIds);
+        notifyDataSetChanged();
+    }
+
+    public interface SubmissionPagerAdapterListener {
+        void requestSubmissions();
     }
 }

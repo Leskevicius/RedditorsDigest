@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.magicbuddha.redditorsdigest.R;
 
@@ -31,7 +32,7 @@ import butterknife.ButterKnife;
  * Created by Magic_Buddha on 1/17/2018.
  */
 
-public class PictureSubmissionFragment extends Fragment implements GetSubmissionDataTask.SubmissionDataCallback {
+public class SubmissionFragment extends Fragment implements GetSubmissionDataTask.SubmissionDataCallback {
     protected String submissionId;
     protected Submission submission;
     protected List<CommentNode<PublicContribution<?>>> comments;
@@ -49,18 +50,18 @@ public class PictureSubmissionFragment extends Fragment implements GetSubmission
     private static final String SUBMISSION_ID = "submissionId";
     private static final String REDDIT_BASE_URL = "https://www.reddit.com";
 
-    public static PictureSubmissionFragment getInstance(String submissionId) {
+    public static SubmissionFragment getInstance(String submissionId) {
         Bundle bundle = new Bundle();
         bundle.putString(SUBMISSION_ID, submissionId);
-        PictureSubmissionFragment pictureSubmissionFragment = new PictureSubmissionFragment();
-        pictureSubmissionFragment.setArguments(bundle);
-        return pictureSubmissionFragment;
+        SubmissionFragment submissionFragment = new SubmissionFragment();
+        submissionFragment.setArguments(bundle);
+        return submissionFragment;
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.picture_submission, container, false);
+        View view = inflater.inflate(R.layout.submission, container, false);
         ButterKnife.bind(this, view);
 
         Bundle bundle = getArguments();
