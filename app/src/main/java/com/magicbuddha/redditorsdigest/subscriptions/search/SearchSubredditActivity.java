@@ -1,4 +1,4 @@
-package com.magicbuddha.redditorsdigest.search;
+package com.magicbuddha.redditorsdigest.subscriptions.search;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -14,7 +14,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,12 +26,10 @@ import android.widget.TextView;
 
 import com.magicbuddha.redditorsdigest.R;
 import com.magicbuddha.redditorsdigest.data.SubscriptionsContract;
-import com.magicbuddha.redditorsdigest.reddit.Reddit;
 import com.magicbuddha.redditorsdigest.reddit.SearchSubredditsTask;
 
 import net.dean.jraw.models.Subreddit;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,7 +105,7 @@ public class SearchSubredditActivity extends AppCompatActivity implements Search
         });
 
         // recycler view
-        adapter = new SearchSubredditAdapter(getApplicationContext(), this);
+        adapter = new SearchSubredditAdapter(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(adapter);

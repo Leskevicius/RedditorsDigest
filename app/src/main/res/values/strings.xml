@@ -1,15 +1,10 @@
 <resources>
     <string name="app_name">Redditors Digest</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-
     <string name="action_search">SEARCH</string>
+    <string name="action_manage">MANAGE</string>
 
     <!--AuthenticateBotTask-->
-    <string name="bot_platform">bot</string>
-    <string name="bot_appId">com.magicbuddha.redditorsdigest</string>
-    <string name="bot_version">v0.1</string>
     <string name="no_subscription_message">There are no post to show. Try subscribing to some reddits.</string>
     <string name="no_subscription_button">SEARCH SUBREDDITS</string>
     <string name="hint_search">Search</string>
@@ -19,5 +14,4 @@
     <string name="fontFamily">sans-serif</string>
     <string name="subreddit_prefix">/r/</string>
     <string name="points">points</string>
-    <string name="no_comments">There are no comments for this submission.</string>
 </resources>

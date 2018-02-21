@@ -3,6 +3,7 @@ package com.magicbuddha.redditorsdigest.home;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.view.ViewGroup;
 
 import com.magicbuddha.redditorsdigest.submissions.SubmissionFragment;
 
@@ -24,9 +25,6 @@ public class SubmissionPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        if (submissions.size() - (position + 1) <= 0) {
-            listener.requestSubmissions();
-        }
         return SubmissionFragment.getInstance(submissions.get(position));
     }
 
@@ -37,7 +35,6 @@ public class SubmissionPagerAdapter extends FragmentStatePagerAdapter {
             String subId = fragment.getSubmissionId();
 
             int position = submissions.indexOf(subId);
-
             if (position >= 0) {
                 return position;
             } else {
@@ -66,6 +63,14 @@ public class SubmissionPagerAdapter extends FragmentStatePagerAdapter {
 
         this.submissions.addAll(submissionIds);
         notifyDataSetChanged();
+    }
+
+    @Override
+    public Object instantiateItem(ViewGroup container, int position) {
+        if (submissions.size() - (position + 1) <= 0) {
+            listener.requestSubmissions();
+        }
+        return super.instantiateItem(container, position);
     }
 
     public interface SubmissionPagerAdapterListener {

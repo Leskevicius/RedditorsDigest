@@ -1,6 +1,5 @@
-package com.magicbuddha.redditorsdigest.search;
+package com.magicbuddha.redditorsdigest.subscriptions.search;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,14 +16,12 @@ import java.util.List;
 
 public class SearchSubredditAdapter extends RecyclerView.Adapter<SearchSubredditAdapter.SubredditViewHolder> {
 
-    private Context context;
     private List<Subreddit> subreddits;
     private List<String> subscriptions;
     private SubredditAdapterListener listener;
 
-    public SearchSubredditAdapter(Context context, SubredditAdapterListener listener) {
+    public SearchSubredditAdapter(SubredditAdapterListener listener) {
         this.listener = listener;
-        this.context = context;
     }
 
     public class SubredditViewHolder extends RecyclerView.ViewHolder {
@@ -36,22 +33,6 @@ public class SearchSubredditAdapter extends RecyclerView.Adapter<SearchSubreddit
 
             if (itemView instanceof SubredditListItemView) {
                 view = (SubredditListItemView) itemView;
-                view.setOnSubscribeListener(new SubredditListItemView.OnSubscribeListener() {
-                    @Override
-                    public void onSubscribeClicked(boolean isSubscribed) {
-                        int adapterPosition = getAdapterPosition();
-                        if (listener != null) {
-                            listener.onSubscribed(subreddits.get(adapterPosition), isSubscribed);
-                        }
-
-                        view.setSubscribed(isSubscribed);
-                        if (isSubscribed) {
-                            subscriptions.add(subreddits.get(adapterPosition).getName());
-                        } else {
-                            subscriptions.remove(subreddits.get(adapterPosition).getName());
-                        }
-                    }
-                });
             }
         }
     }
@@ -62,7 +43,23 @@ public class SearchSubredditAdapter extends RecyclerView.Adapter<SearchSubreddit
     }
 
     @Override
-    public void onBindViewHolder(SearchSubredditAdapter.SubredditViewHolder holder, int position) {
+    public void onBindViewHolder(final SearchSubredditAdapter.SubredditViewHolder holder, int position) {
+        holder.view.setOnSubscribeListener(new SubredditListItemView.OnSubscribeListener() {
+            @Override
+            public void onSubscribeClicked(boolean isSubscribed) {
+                int adapterPosition = holder.getAdapterPosition();
+                if (listener != null) {
+                    listener.onSubscribed(subreddits.get(adapterPosition), isSubscribed);
+                }
+
+                holder.view.setSubscribed(isSubscribed);
+                if (isSubscribed) {
+                    subscriptions.add(subreddits.get(adapterPosition).getName());
+                } else {
+                    subscriptions.remove(subreddits.get(adapterPosition).getName());
+                }
+            }
+        });
         holder.view.setTitle(subreddits.get(position).getName());
         holder.view.setHint("Subs: " + subreddits.get(position).getSubscribers());
         if (subscriptions.contains(subreddits.get(position).getName())) {
