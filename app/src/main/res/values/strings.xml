@@ -2,6 +2,7 @@
     <string name="app_name">Redditors Digest</string>
 
     <string name="action_search">SEARCH</string>
+    <string name="action_manage">MANAGE</string>
 
     <!--AuthenticateBotTask-->
     <string name="no_subscription_message">There are no post to show. Try subscribing to some reddits.</string>

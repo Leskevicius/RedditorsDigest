@@ -1,4 +1,4 @@
-package com.magicbuddha.redditorsdigest.search;
+package com.magicbuddha.redditorsdigest.subscriptions.search;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -105,7 +105,7 @@ public class SearchSubredditActivity extends AppCompatActivity implements Search
         });
 
         // recycler view
-        adapter = new SearchSubredditAdapter(getApplicationContext(), this);
+        adapter = new SearchSubredditAdapter(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(adapter);
