@@ -1,6 +1,7 @@
 package com.magicbuddha.redditorsdigest.submissions;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -8,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.magicbuddha.redditorsdigest.R;
 import com.magicbuddha.redditorsdigest.views.CommentView;
 import com.magicbuddha.redditorsdigest.views.SelfPostView;
@@ -67,6 +71,7 @@ public class SubmissionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     public class ContentSelfViewHolder extends RecyclerView.ViewHolder {
         SelfPostView view;
+
         ContentSelfViewHolder(View itemView) {
             super(itemView);
             if (itemView instanceof SelfPostView) {
@@ -105,15 +110,27 @@ public class SubmissionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.height = (int) halfScreenPx;
             ((ContentPictureViewHolder) holder).view.setLayoutParams(params);
+
             Glide.with(context)
                     .load(submission.getUrl())
+                    .error(R.drawable.ic_cannot_load_picture)
                     .into(((ContentPictureViewHolder) holder).view);
+
+            ((ContentPictureViewHolder) holder).view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, FullScreenPicture.class);
+                    intent.putExtra(FullScreenPicture.URL_EXTRA, submission.getUrl());
+                    context.startActivity(intent);
+                }
+            });
+
         } else if (holder instanceof ContentSelfViewHolder) {
             // build self post
             ((ContentSelfViewHolder) holder).view.setTitle(submission.getTitle());
             ((ContentSelfViewHolder) holder).view.setAuthor(context.getString(R.string.author_prefix) + " " + submission.getAuthor());
             ((ContentSelfViewHolder) holder).view.setPoints(Integer.toString(submission.getScore()));
-            ((ContentSelfViewHolder) holder).view.setSubreddit(context.getString(R.string.subreddit_prefix) +submission.getSubreddit());
+            ((ContentSelfViewHolder) holder).view.setSubreddit(context.getString(R.string.subreddit_prefix) + submission.getSubreddit());
             ((ContentSelfViewHolder) holder).view.setBody(submission.getSelfText());
         }
     }
