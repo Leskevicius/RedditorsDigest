@@ -124,7 +124,11 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
     @Override
     public void onNextSubmissions(List<String> submissionIds) {
         adapter.addData(submissionIds);
-        submissions.addAll(submissionIds);
+
+        // a hack
+        if (!submissions.contains(submissionIds.get(0))) {
+            submissions.addAll(submissionIds);
+        }
         showPager();
     }
 
@@ -152,6 +156,7 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
                 Snackbar.make(homeLayout, "Updated needed.", Snackbar.LENGTH_SHORT).show();
                 setLoading(true);
                 subscriptions.clear();
+                submissions.clear();
                 refresh = true;
                 adapter.setData(new ArrayList<String>());
                 getSupportLoaderManager().restartLoader(LOADER_ID, null, this);
@@ -176,7 +181,7 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
 
     private void initSubredditProvider() {
         SubredditProvider provider = SubredditProvider.getInstance();
-        provider.init(subscriptions, SubredditSort.HOT, 1, 1);
+        provider.init(subscriptions, SubredditSort.HOT, 2, 1);
     }
 
     @Override
