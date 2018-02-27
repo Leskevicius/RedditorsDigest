@@ -1,61 +1,59 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     android:orientation="vertical"
-    android:padding="@dimen/widget_margin"
-    android:background="@android:color/white">
+    android:padding="@dimen/widget_margin">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:background="@color/colorPrimary"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp">
-
-        <ImageView
-            android:layout_gravity="center"
-            android:layout_width="0dp"
-            android:layout_height="12dp"
-            android:layout_weight="0.2"
-            android:src="@drawable/ic_widget_previous" />
+        android:orientation="horizontal"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp">
 
         <TextView
-            android:gravity="center"
+            android:id="@+id/widget_subreddit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".6"
             android:contentDescription="@string/appwidget_text"
+            android:gravity="center"
             android:text="@string/appwidget_text"
-            android:textSize="10sp"
-            android:textColor="@android:color/white" />
-
-        <ImageView
-            android:layout_gravity="center"
-            android:layout_width="0dp"
-            android:layout_height="12dp"
-            android:layout_weight="0.2"
-            android:src="@drawable/ic_widget_next" />
+            android:textColor="@android:color/white"
+            android:textSize="12sp" />
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/appwidget_text"
-        android:layout_width="match_parent"
+    <ProgressBar
+        android:id="@+id/widget_progressbar"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
-        android:contentDescription="@string/appwidget_text"
-        android:text="@string/appwidget_text"
-        android:textSize="14sp" />
+        android:layout_gravity="center" />
 
     <TextView
+        android:id="@+id/widget_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
         android:layout_marginEnd="4dp"
+        android:layout_marginStart="4dp"
+        android:contentDescription="@string/appwidget_text"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="@string/appwidget_text"
+        android:textSize="14sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/widget_author"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:layout_marginStart="4dp"
         android:contentDescription="@string/appwidget_text"
         android:text="@string/appwidget_text"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        android:visibility="gone" />
 
 </LinearLayout>

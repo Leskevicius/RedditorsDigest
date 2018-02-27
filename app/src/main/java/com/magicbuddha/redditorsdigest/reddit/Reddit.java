@@ -1,5 +1,7 @@
 package com.magicbuddha.redditorsdigest.reddit;
 
+import android.support.annotation.NonNull;
+
 import net.dean.jraw.RedditClient;
 
 /**
@@ -12,6 +14,7 @@ public class Reddit {
     private static Reddit redditInstance;
 
     private static final String TAG = Reddit.class.getCanonicalName();
+    private boolean initialized;
 
     /**
      * Safe way of accessing a {@link Reddit} singleton reference.
@@ -36,8 +39,9 @@ public class Reddit {
      *
      * @param client {@link RedditClient}.
      */
-    public synchronized void setRedditClient(RedditClient client) {
+    public synchronized void setRedditClient(@NonNull RedditClient client) {
         this.reddit = client;
+        this.initialized = true;
     }
 
     /**
@@ -55,5 +59,9 @@ public class Reddit {
         if (this.reddit == null) {
             throw new IllegalStateException("Reddit client was not initialized before using Reddit api.");
         }
+    }
+
+    public boolean initialized() {
+        return initialized;
     }
 }
