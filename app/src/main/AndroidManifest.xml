@@ -52,7 +52,13 @@
 
         <service
             android:name=".widget.SubmissionWidgetService"
-            android:exported="false"></service>
+            android:exported="false" />
+
+        <activity
+            android:name=".submissions.SingleSubmissionActivity"
+            android:label="@string/app_name"
+            android:parentActivityName=".home.HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

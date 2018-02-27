@@ -1,6 +1,7 @@
 package com.magicbuddha.redditorsdigest.widget;
 
 import android.app.IntentService;
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -17,10 +18,12 @@ import android.widget.RemoteViews;
 
 import com.magicbuddha.redditorsdigest.R;
 import com.magicbuddha.redditorsdigest.data.SubscriptionsContract;
+import com.magicbuddha.redditorsdigest.home.HomeActivity;
 import com.magicbuddha.redditorsdigest.reddit.AuthenticateBotTask;
 import com.magicbuddha.redditorsdigest.reddit.Reddit;
 import com.magicbuddha.redditorsdigest.reddit.SubredditProvider;
 import com.magicbuddha.redditorsdigest.submissions.GetSubmissionDataTask;
+import com.magicbuddha.redditorsdigest.submissions.SingleSubmissionActivity;
 
 import net.dean.jraw.RedditClient;
 import net.dean.jraw.models.PublicContribution;
@@ -148,7 +151,7 @@ public class SubmissionWidgetService extends IntentService implements Authentica
         }
     }
 
-    private void updateAppWidget(Submission submission) {
+    private void updateAppWidget(@Nullable Submission submission) {
         AppWidgetManager manager = AppWidgetManager.getInstance(this);
         int[] widgetIds = manager.getAppWidgetIds(new ComponentName(this, SubmissionWidget.class));
 
@@ -163,6 +166,23 @@ public class SubmissionWidgetService extends IntentService implements Authentica
             views.setViewVisibility(R.id.widget_title, View.VISIBLE);
             views.setViewVisibility(R.id.widget_progressbar, View.GONE);
 
+            Intent backIntent = new Intent(this, HomeActivity.class);
+            backIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            // set up a way to view the post
+            Intent submissionIntent = new Intent(this, SingleSubmissionActivity.class);
+            submissionIntent.putExtra(SingleSubmissionActivity.SUBMISSION_ID, submission.getId());
+            Intent[] intents = {backIntent, submissionIntent};
+            PendingIntent pendingIntent = PendingIntent.getActivities(this, 0, intents, 0);
+            views.setOnClickPendingIntent(R.id.widget_content, pendingIntent);
+
+            // set up a way to get a new random post
+            Intent randomSubmissionActionIntent = getRandomSubmissionActionIntent(this);
+            PendingIntent randomSubmissionPendingIntent = PendingIntent.getService(this, 0, randomSubmissionActionIntent, 0);
+            views.setOnClickPendingIntent(R.id.widget_bar, randomSubmissionPendingIntent);
+
+            manager.updateAppWidget(widgetIds, views);
+
         } else {
             views.setTextViewText(R.id.widget_subreddit, "Redditors Digest");
             views.setTextViewText(R.id.widget_title, "Please subscribe to a subreddit.");
@@ -170,19 +190,6 @@ public class SubmissionWidgetService extends IntentService implements Authentica
             views.setViewVisibility(R.id.widget_author, View.GONE);
             views.setViewVisibility(R.id.widget_progressbar, View.GONE);
         }
-
-        manager.updateAppWidget(widgetIds, views);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-//        if (cursorLoader != null) {
-//            cursorLoader.unregisterListener(this);
-//            cursorLoader.cancelLoad();
-//            cursorLoader.stopLoading();
-//        }
     }
 
     @Override
