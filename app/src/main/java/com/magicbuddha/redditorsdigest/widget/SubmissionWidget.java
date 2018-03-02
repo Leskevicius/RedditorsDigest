@@ -3,38 +3,44 @@ package com.magicbuddha.redditorsdigest.widget;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.database.Cursor;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.widget.ImageView;
 import android.widget.RemoteViews;
+import android.widget.TextView;
 
 import com.magicbuddha.redditorsdigest.R;
+import com.magicbuddha.redditorsdigest.data.SubscriptionsContract;
+import com.magicbuddha.redditorsdigest.reddit.SubredditProvider;
+import com.magicbuddha.redditorsdigest.submissions.GetSubmissionDataTask;
+
+import net.dean.jraw.models.PublicContribution;
+import net.dean.jraw.models.Submission;
+import net.dean.jraw.models.SubredditSort;
+import net.dean.jraw.tree.CommentNode;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Implementation of App Widget functionality.
  */
 public class SubmissionWidget extends AppWidgetProvider {
-
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
-
-        CharSequence widgetText = context.getString(R.string.appwidget_text);
-        // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.submission_widget);
-        views.setTextViewText(R.id.appwidget_text, widgetText);
-
-        // Instruct the widget manager to update the widget
-        appWidgetManager.updateAppWidget(appWidgetId, views);
-    }
-
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        // There may be multiple widgets active, so update all of them
-        for (int appWidgetId : appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId);
-        }
+        context.startService(SubmissionWidgetService.getRandomSubmissionActionIntent(context));
     }
 
     @Override
     public void onEnabled(Context context) {
-        // Enter relevant functionality for when the first widget is created
+        context.startService(SubmissionWidgetService.getRandomSubmissionActionIntent(context));
     }
 
     @Override

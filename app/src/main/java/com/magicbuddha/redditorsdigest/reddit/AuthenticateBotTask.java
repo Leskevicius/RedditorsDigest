@@ -37,25 +37,10 @@ public class AuthenticateBotTask extends AsyncTask<Void, Void, RedditClient> {
     @Override
     protected RedditClient doInBackground(Void... voids) {
         RedditClient reddit = null;
-
+        Log.w("ROKAS", "in background");
         Context context = weakContext.get();
-        if (context != null) {
-//            UserAgent userAgent = new UserAgent(
-//                    context.getString(R.string.bot_platform),
-//                    context.getString(R.string.bot_appId),
-//                    context.getString(R.string.bot_version),
-//                    context.getString(R.string.bot_reddit_username));
-//
-//            Credentials credentials = Credentials.script(
-//                    context.getString(R.string.bot_reddit_username),
-//                    context.getString(R.string.bot_reddit_password),
-//                    context.getString(R.string.client_id),
-//                    context.getString(R.string.client_secret)
-//            );
-//
-//            NetworkAdapter adapter = new OkHttpNetworkAdapter(userAgent);
-//            reddit = OAuthHelper.automatic(adapter, credentials);
 
+        if (context != null) {
             UserAgent userAgent = new UserAgent("WHATEVER");
             Credentials credentials = Credentials.userless(
                     context.getString(R.string.client_id),
@@ -75,6 +60,9 @@ public class AuthenticateBotTask extends AsyncTask<Void, Void, RedditClient> {
     @Override
     protected void onPostExecute(RedditClient redditClient) {
         super.onPostExecute(redditClient);
+        if (redditClient == null) {
+            Log.w(TAG, "Tried auth api call, but client is still null");
+        }
         callback.onAuthenticated(redditClient);
     }
 

@@ -1,5 +1,7 @@
 package com.magicbuddha.redditorsdigest.reddit;
 
+import android.support.annotation.NonNull;
+
 import net.dean.jraw.RedditClient;
 
 /**
@@ -36,7 +38,7 @@ public class Reddit {
      *
      * @param client {@link RedditClient}.
      */
-    public synchronized void setRedditClient(RedditClient client) {
+    public synchronized void setRedditClient(@NonNull RedditClient client) {
         this.reddit = client;
     }
 
@@ -55,5 +57,9 @@ public class Reddit {
         if (this.reddit == null) {
             throw new IllegalStateException("Reddit client was not initialized before using Reddit api.");
         }
+    }
+
+    public boolean initialized() {
+        return reddit != null;
     }
 }
