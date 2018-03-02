@@ -26,15 +26,21 @@ import com.magicbuddha.redditorsdigest.submissions.GetSubmissionDataTask;
 import com.magicbuddha.redditorsdigest.submissions.SingleSubmissionActivity;
 
 import net.dean.jraw.RedditClient;
+import net.dean.jraw.http.NetworkAdapter;
+import net.dean.jraw.http.OkHttpNetworkAdapter;
+import net.dean.jraw.http.UserAgent;
 import net.dean.jraw.models.PublicContribution;
 import net.dean.jraw.models.Submission;
 import net.dean.jraw.models.SubredditSort;
+import net.dean.jraw.oauth.Credentials;
+import net.dean.jraw.oauth.OAuthHelper;
 import net.dean.jraw.tree.CommentNode;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -43,9 +49,6 @@ import java.util.Random;
 public class SubmissionWidgetService extends IntentService implements AuthenticateBotTask.AuthenticateCallback {
 
     private static final String ACTION_GET_RANDOM_SUBMISSION = "actionGetRandomSubmission";
-    private static final int LOADER_ID = 31;
-
-    private CursorLoader cursorLoader;
 
     public SubmissionWidgetService() {
         super("SubmissionWidgetService");
@@ -62,16 +65,11 @@ public class SubmissionWidgetService extends IntentService implements Authentica
         if (intent != null) {
             final String action = intent.getAction();
             if (ACTION_GET_RANDOM_SUBMISSION.equals(action)) {
-                if (redditApiInitialized())
-                handleActionRandomGetSubmission();
-            } else {
-                initReddit();
+                if (redditApiInitialized()) {
+                    handleActionRandomGetSubmission();
+                }
             }
         }
-    }
-
-    private void initReddit() {
-
     }
 
     private boolean redditApiInitialized() {
@@ -79,9 +77,25 @@ public class SubmissionWidgetService extends IntentService implements Authentica
         if (reddit.initialized()) {
             return true;
         } else {
-            new AuthenticateBotTask(new WeakReference<Context>(this), this);
+            initReddit();
             return false;
         }
+    }
+
+    private void initReddit() {
+        Reddit reddit = Reddit.getInstance();
+        UserAgent userAgent = new UserAgent("WHATEVER");
+        Credentials credentials = Credentials.userless(
+                getString(R.string.client_id),
+                getString(R.string.client_secret),
+                UUID.randomUUID()
+        );
+
+        NetworkAdapter adapter = new OkHttpNetworkAdapter(userAgent);
+        RedditClient redditClient = OAuthHelper.automatic(adapter, credentials);
+        reddit.setRedditClient(redditClient);
+        
+        handleActionRandomGetSubmission();
     }
 
     private void handleActionRandomGetSubmission() {
@@ -173,7 +187,7 @@ public class SubmissionWidgetService extends IntentService implements Authentica
             Intent submissionIntent = new Intent(this, SingleSubmissionActivity.class);
             submissionIntent.putExtra(SingleSubmissionActivity.SUBMISSION_ID, submission.getId());
             Intent[] intents = {backIntent, submissionIntent};
-            PendingIntent pendingIntent = PendingIntent.getActivities(this, 0, intents, 0);
+            PendingIntent pendingIntent = PendingIntent.getActivities(this, 0, intents, PendingIntent.FLAG_UPDATE_CURRENT);
             views.setOnClickPendingIntent(R.id.widget_content, pendingIntent);
 
             // set up a way to get a new random post

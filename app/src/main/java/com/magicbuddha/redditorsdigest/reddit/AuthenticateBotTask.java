@@ -37,8 +37,9 @@ public class AuthenticateBotTask extends AsyncTask<Void, Void, RedditClient> {
     @Override
     protected RedditClient doInBackground(Void... voids) {
         RedditClient reddit = null;
-
+        Log.w("ROKAS", "in background");
         Context context = weakContext.get();
+
         if (context != null) {
             UserAgent userAgent = new UserAgent("WHATEVER");
             Credentials credentials = Credentials.userless(
@@ -59,6 +60,9 @@ public class AuthenticateBotTask extends AsyncTask<Void, Void, RedditClient> {
     @Override
     protected void onPostExecute(RedditClient redditClient) {
         super.onPostExecute(redditClient);
+        if (redditClient == null) {
+            Log.w(TAG, "Tried auth api call, but client is still null");
+        }
         callback.onAuthenticated(redditClient);
     }
 

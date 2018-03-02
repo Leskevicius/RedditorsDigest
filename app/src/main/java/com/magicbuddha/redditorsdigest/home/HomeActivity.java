@@ -26,6 +26,7 @@ import com.magicbuddha.redditorsdigest.reddit.Reddit;
 import com.magicbuddha.redditorsdigest.reddit.SubredditProvider;
 import com.magicbuddha.redditorsdigest.subscriptions.ManageSubscriptionsActivity;
 import com.magicbuddha.redditorsdigest.subscriptions.search.SearchSubredditActivity;
+import com.magicbuddha.redditorsdigest.widget.SubmissionWidgetService;
 
 import net.dean.jraw.RedditClient;
 import net.dean.jraw.models.SubredditSort;

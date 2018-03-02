@@ -14,7 +14,6 @@ public class Reddit {
     private static Reddit redditInstance;
 
     private static final String TAG = Reddit.class.getCanonicalName();
-    private boolean initialized;
 
     /**
      * Safe way of accessing a {@link Reddit} singleton reference.
@@ -41,7 +40,6 @@ public class Reddit {
      */
     public synchronized void setRedditClient(@NonNull RedditClient client) {
         this.reddit = client;
-        this.initialized = true;
     }
 
     /**
@@ -62,6 +60,6 @@ public class Reddit {
     }
 
     public boolean initialized() {
-        return initialized;
+        return reddit != null;
     }
 }

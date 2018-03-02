@@ -23,6 +23,8 @@ import butterknife.ButterKnife;
 
 public class SingleSubmissionActivity extends AppCompatActivity implements AuthenticateBotTask.AuthenticateCallback {
 
+    private static final String TAG = SingleSubmissionActivity.class.getName();
+
     public static final String SUBMISSION_ID = "submissionId";
 
     private String submissionId;
@@ -39,13 +41,11 @@ public class SingleSubmissionActivity extends AppCompatActivity implements Authe
         }
 
         submissionId = getIntent().getStringExtra(SUBMISSION_ID);
-        Log.w("Rokas", submissionId);
+        Log.w(TAG, "SubmissionId = " + submissionId);
 
         if (Reddit.getInstance().initialized()) {
-            Log.w("Rokas", "INITIALIZED");
             showFragment();
         } else {
-            Log.w("Rokas", "NOT");
             new AuthenticateBotTask(new WeakReference<Context>(this), this);
         }
     }
@@ -62,6 +62,8 @@ public class SingleSubmissionActivity extends AppCompatActivity implements Authe
     public void onAuthenticated(RedditClient reddit) {
         if (reddit != null) {
             showFragment();
+        } else {
+            Log.w(TAG, "Reddit is null");
         }
     }
 }
