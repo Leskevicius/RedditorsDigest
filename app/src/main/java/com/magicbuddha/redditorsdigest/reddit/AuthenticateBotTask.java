@@ -37,7 +37,6 @@ public class AuthenticateBotTask extends AsyncTask<Void, Void, RedditClient> {
     @Override
     protected RedditClient doInBackground(Void... voids) {
         RedditClient reddit = null;
-        Log.w("ROKAS", "in background");
         Context context = weakContext.get();
 
         if (context != null) {
@@ -50,8 +49,6 @@ public class AuthenticateBotTask extends AsyncTask<Void, Void, RedditClient> {
 
             NetworkAdapter adapter = new OkHttpNetworkAdapter(userAgent);
             reddit = OAuthHelper.automatic(adapter, credentials);
-        } else {
-            Log.w(TAG, "Failed authenticating the bot. Context was null.");
         }
 
         return reddit;
@@ -60,9 +57,6 @@ public class AuthenticateBotTask extends AsyncTask<Void, Void, RedditClient> {
     @Override
     protected void onPostExecute(RedditClient redditClient) {
         super.onPostExecute(redditClient);
-        if (redditClient == null) {
-            Log.w(TAG, "Tried auth api call, but client is still null");
-        }
         callback.onAuthenticated(redditClient);
     }
 

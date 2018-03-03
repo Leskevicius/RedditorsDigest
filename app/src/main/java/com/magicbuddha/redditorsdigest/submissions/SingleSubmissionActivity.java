@@ -41,7 +41,6 @@ public class SingleSubmissionActivity extends AppCompatActivity implements Authe
         }
 
         submissionId = getIntent().getStringExtra(SUBMISSION_ID);
-        Log.w(TAG, "SubmissionId = " + submissionId);
 
         if (Reddit.getInstance().initialized()) {
             showFragment();
@@ -62,8 +61,6 @@ public class SingleSubmissionActivity extends AppCompatActivity implements Authe
     public void onAuthenticated(RedditClient reddit) {
         if (reddit != null) {
             showFragment();
-        } else {
-            Log.w(TAG, "Reddit is null");
         }
     }
 }

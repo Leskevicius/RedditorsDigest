@@ -40,7 +40,7 @@ public class SubmissionWidget extends AppWidgetProvider {
 
     @Override
     public void onEnabled(Context context) {
-        context.startService(SubmissionWidgetService.getRandomSubmissionActionIntent(context));
+        // no op
     }
 
     @Override
