@@ -16,4 +16,11 @@
     <string name="points">points</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+
+    <!--ads-->
+    <!--<string name="search_subreddits_ad_unit_id">ca-app-pub-4244531042879120/6016895396</string>-->
+    <string name="search_subreddits_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+
+
+    <string name="app_ad_id">ca-app-pub-4244531042879120~5545234059</string>
 </resources>

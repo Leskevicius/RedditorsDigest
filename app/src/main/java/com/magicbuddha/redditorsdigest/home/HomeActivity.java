@@ -19,6 +19,7 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.MobileAds;
 import com.magicbuddha.redditorsdigest.R;
 import com.magicbuddha.redditorsdigest.data.SubscriptionsContract;
 import com.magicbuddha.redditorsdigest.reddit.AuthenticateBotTask;
@@ -76,6 +77,7 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
         viewPager.setAdapter(adapter);
 
         if (savedInstanceState == null) {
+            MobileAds.initialize(this, getString(R.string.app_ad_id));
             refresh = true;
             new AuthenticateBotTask(new WeakReference<>(getApplicationContext()), this).execute();
             setLoading(true);

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/search_layout"
     android:layout_width="match_parent"
@@ -10,12 +10,15 @@
         android:id="@+id/search_app_bar"
         layout="@layout/app_bar_home"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"/>
 
     <LinearLayout
+        android:id="@+id/search_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_below="@+id/search_app_bar">
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_search"
@@ -58,10 +61,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_layout_search" />
+        android:layout_above="@+id/ad_view"
+        android:layout_below="@+id/search_header"/>
 
     <ProgressBar
         android:id="@+id/search_progressbar"
@@ -69,11 +70,7 @@
         android:layout_height="42dp"
         android:visibility="gone"
         android:layout_marginTop="16dp"
-        android:layout_gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_app_bar" />
+        android:layout_centerInParent="true" />
 
     <TextView
         android:id="@+id/search_no_results"
@@ -84,8 +81,16 @@
         android:paddingTop="8dp"
         android:text="@string/search_no_content"
         android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_layout_search" />
+        android:layout_below="@+id/search_header"/>
 
-</LinearLayout>
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/ad_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/search_subreddits_ad_unit_id"
+        android:layout_alignParentBottom="true"
+        />
+
+</RelativeLayout>

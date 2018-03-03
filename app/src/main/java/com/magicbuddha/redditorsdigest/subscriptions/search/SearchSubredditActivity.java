@@ -24,6 +24,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.magicbuddha.redditorsdigest.R;
 import com.magicbuddha.redditorsdigest.data.SubscriptionsContract;
 import com.magicbuddha.redditorsdigest.reddit.SearchSubredditsTask;
@@ -60,6 +62,9 @@ public class SearchSubredditActivity extends AppCompatActivity implements Search
     @BindView(R.id.search_no_results)
     TextView noResultsView;
 
+    @BindView(R.id.ad_view)
+    AdView adView;
+
     private SearchSubredditAdapter adapter;
     private ArrayList<String> subscriptionsChanged;
     private boolean searchClicked;
@@ -76,6 +81,8 @@ public class SearchSubredditActivity extends AppCompatActivity implements Search
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_subreddit);
         ButterKnife.bind(this);
+
+        adView.loadAd(new AdRequest.Builder().build());
 
         // tool bar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -142,6 +149,8 @@ public class SearchSubredditActivity extends AppCompatActivity implements Search
 
     @Override
     public void onSearchComplete(List<Subreddit> subreddits) {
+        setLoading(false);
+
         if (subreddits != null) {
             Uri SubscriptionsUri = SubscriptionsContract.SubscriptionEntity.CONTENT_URI;
 
@@ -168,7 +177,6 @@ public class SearchSubredditActivity extends AppCompatActivity implements Search
         } else {
             showNoResults(true);
         }
-        setLoading(false);
     }
 
     private void setLoading(boolean isLoading) {
@@ -184,8 +192,10 @@ public class SearchSubredditActivity extends AppCompatActivity implements Search
     private void showNoResults(boolean show) {
         if (show) {
             noResultsView.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.INVISIBLE);
         } else {
             noResultsView.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
         }
     }
 
