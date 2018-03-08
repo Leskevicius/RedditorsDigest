@@ -8,12 +8,17 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.magicbuddha.redditorsdigest.AnalyticsApplication;
 import com.magicbuddha.redditorsdigest.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class FullScreenPicture extends AppCompatActivity {
+
+    private static final String TAG = FullScreenPicture.class.getSimpleName();
 
     public static final String URL_EXTRA = "URL_EXTRA";
     @BindView(R.id.full_screen_image)
@@ -36,6 +41,12 @@ public class FullScreenPicture extends AppCompatActivity {
                 .load(url)
                 .error(R.drawable.ic_cannot_load_picture)
                 .into(fullScreenImage);
+
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+
+        Tracker tracker = application.getDefaultTracker();
+        tracker.setScreenName(TAG);
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @Override

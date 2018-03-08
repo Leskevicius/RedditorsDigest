@@ -26,6 +26,9 @@ import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.magicbuddha.redditorsdigest.AnalyticsApplication;
 import com.magicbuddha.redditorsdigest.R;
 import com.magicbuddha.redditorsdigest.data.SubscriptionsContract;
 import com.magicbuddha.redditorsdigest.reddit.SearchSubredditsTask;
@@ -43,6 +46,8 @@ import butterknife.ButterKnife;
  */
 
 public class SearchSubredditActivity extends AppCompatActivity implements SearchSubredditsTask.SearchCallback, SearchSubredditAdapter.SubredditAdapterListener {
+
+    private static final String TAG = SearchSubredditActivity.class.getSimpleName();
 
     @BindView(R.id.search_recycler_view)
     RecyclerView recyclerView;
@@ -130,6 +135,12 @@ public class SearchSubredditActivity extends AppCompatActivity implements Search
         } else {
             subscriptionsChanged = new ArrayList<>();
         }
+
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+
+        Tracker tracker = application.getDefaultTracker();
+        tracker.setScreenName(TAG);
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @Override

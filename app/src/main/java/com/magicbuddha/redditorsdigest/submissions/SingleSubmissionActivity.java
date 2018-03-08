@@ -9,6 +9,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.FrameLayout;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.magicbuddha.redditorsdigest.AnalyticsApplication;
 import com.magicbuddha.redditorsdigest.R;
 import com.magicbuddha.redditorsdigest.reddit.AuthenticateBotTask;
 import com.magicbuddha.redditorsdigest.reddit.Reddit;
@@ -23,7 +26,7 @@ import butterknife.ButterKnife;
 
 public class SingleSubmissionActivity extends AppCompatActivity implements AuthenticateBotTask.AuthenticateCallback {
 
-    private static final String TAG = SingleSubmissionActivity.class.getName();
+    private static final String TAG = SingleSubmissionActivity.class.getSimpleName();
 
     public static final String SUBMISSION_ID = "submissionId";
 
@@ -47,6 +50,12 @@ public class SingleSubmissionActivity extends AppCompatActivity implements Authe
         } else {
             new AuthenticateBotTask(new WeakReference<Context>(this), this);
         }
+
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+
+        Tracker tracker = application.getDefaultTracker();
+        tracker.setScreenName(TAG);
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     private void showFragment() {

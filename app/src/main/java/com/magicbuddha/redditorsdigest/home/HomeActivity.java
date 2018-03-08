@@ -20,6 +20,9 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.magicbuddha.redditorsdigest.AnalyticsApplication;
 import com.magicbuddha.redditorsdigest.R;
 import com.magicbuddha.redditorsdigest.data.SubscriptionsContract;
 import com.magicbuddha.redditorsdigest.reddit.AuthenticateBotTask;
@@ -41,7 +44,7 @@ import butterknife.ButterKnife;
 
 public class HomeActivity extends AppCompatActivity implements AuthenticateBotTask.AuthenticateCallback, SubredditProvider.SubmissionListener, LoaderManager.LoaderCallbacks<Cursor>, SubmissionPagerAdapter.SubmissionPagerAdapterListener {
 
-    private static final String TAG = HomeActivity.class.getCanonicalName();
+    private static final String TAG = HomeActivity.class.getSimpleName();
     private static final String SUBMISSIONS = "submissions";
     private static final String SUBSCRIPTIONS = "subscriptions";
     private static final int LOADER_ID = 0x01;
@@ -101,6 +104,12 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
                 showNoSubscriptions();
             }
         }
+
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+
+        Tracker tracker = application.getDefaultTracker();
+        tracker.setScreenName(TAG);
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     private void showNoSubscriptions() {
@@ -244,6 +253,11 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
         viewPager.setVisibility(View.INVISIBLE);
         fragmentContainer.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
+
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+
+        Tracker tracker = application.getDefaultTracker();
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @Override

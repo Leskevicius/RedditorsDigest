@@ -14,6 +14,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.magicbuddha.redditorsdigest.AnalyticsApplication;
 import com.magicbuddha.redditorsdigest.R;
 import com.magicbuddha.redditorsdigest.data.SubscriptionsContract;
 
@@ -24,6 +27,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ManageSubscriptionsActivity extends AppCompatActivity implements ManageSubscriptionsAdapter.ManageSubscriptionsAdapterListener, LoaderManager.LoaderCallbacks<Cursor> {
+
+    private static final String TAG = ManageSubscriptionsActivity.class.getSimpleName();
 
     public static final int REQUEST_CODE = 38;
     public static final int RESULT_NEED_UPDATE = -2;
@@ -63,6 +68,12 @@ public class ManageSubscriptionsActivity extends AppCompatActivity implements Ma
         recyclerView.setAdapter(adapter);
 
         getSupportLoaderManager().initLoader(LOADER_ID, null, this);
+
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+
+        Tracker tracker = application.getDefaultTracker();
+        tracker.setScreenName(TAG);
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @Override
