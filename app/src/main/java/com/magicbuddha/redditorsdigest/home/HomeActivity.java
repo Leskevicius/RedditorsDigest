@@ -3,6 +3,7 @@ package com.magicbuddha.redditorsdigest.home;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
@@ -65,7 +66,7 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
 
     private SubmissionPagerAdapter adapter;
 
-    private boolean refresh = false;
+    private boolean refresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -229,8 +230,8 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+        // no op
     }
 
     private void setLoading(boolean isLoading) {
