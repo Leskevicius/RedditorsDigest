@@ -33,7 +33,6 @@ public class CommentView extends LinearLayout {
 
     private int depth;
     private String text;
-    private String author;
 
     public CommentView(Context context) {
         super(context);
@@ -70,6 +69,7 @@ public class CommentView extends LinearLayout {
 
         int depth;
 
+        String author;
         try {
             text = a.getString(R.styleable.CommentView_text);
             author = a.getString(R.styleable.CommentView_subtext);

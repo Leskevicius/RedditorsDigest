@@ -4,15 +4,10 @@ import android.app.IntentService;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
-import android.content.Intent;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -36,7 +31,6 @@ import net.dean.jraw.oauth.Credentials;
 import net.dean.jraw.oauth.OAuthHelper;
 import net.dean.jraw.tree.CommentNode;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;

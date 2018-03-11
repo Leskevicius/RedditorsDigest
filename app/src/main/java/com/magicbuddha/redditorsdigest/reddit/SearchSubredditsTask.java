@@ -40,6 +40,13 @@ public class SearchSubredditsTask extends AsyncTask<String, Void, List<Subreddit
 
             list = paginator.accumulateMerged(-1);
 
+            if (!allowNSFW) {
+                for (int i = list.size() - 1; i >= 0; i--) {
+                    if (list.get(i).isNsfw()) {
+                        list.remove(i);
+                    }
+                }
+            }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }

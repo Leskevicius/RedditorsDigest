@@ -173,12 +173,14 @@ public class SearchSubredditActivity extends AppCompatActivity implements Search
                     null
             );
 
-            List<String> subscriptions = new ArrayList<String>();
+            List<String> subscriptions = new ArrayList<>();
             result.moveToFirst();
             while (!result.isAfterLast()) {
                 subscriptions.add(result.getString(result.getColumnIndex(SubscriptionsContract.SubscriptionEntity.SUBSCRIPTION_COLUMN))); //add the item
                 result.moveToNext();
             }
+
+            result.close();
 
             adapter.setData(subreddits, subscriptions);
 

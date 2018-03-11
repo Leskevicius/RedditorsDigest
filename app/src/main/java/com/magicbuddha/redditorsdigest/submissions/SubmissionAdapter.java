@@ -9,9 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.magicbuddha.redditorsdigest.R;
 import com.magicbuddha.redditorsdigest.views.CommentView;
 import com.magicbuddha.redditorsdigest.views.SelfPostView;
