@@ -28,7 +28,6 @@ public class GetSubmissionDataTask extends AsyncTask<String, Void, Void> {
     private SubmissionDataCallback callback;
 
     private Submission submission;
-    private RootCommentNode rootCommentNode;
     private List<CommentNode<PublicContribution<?>>> comments;
 
     public GetSubmissionDataTask(@NonNull SubmissionDataCallback callback) {
@@ -41,7 +40,7 @@ public class GetSubmissionDataTask extends AsyncTask<String, Void, Void> {
 
         try {
             SubmissionReference ref = reddit.submission(strings[0]);
-            rootCommentNode = ref.comments();
+            RootCommentNode rootCommentNode = ref.comments();
             submission = rootCommentNode.getSubject();
 
             Iterator<CommentNode<PublicContribution<?>>> i = rootCommentNode.walkTree().iterator();

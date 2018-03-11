@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
 
 public class SubredditListItemView extends RelativeLayout {
 
-    @BindView(R.id.title)
+    @BindView(R.id.subreddit_item_title)
     TextView title;
 
     @BindView(R.id.hint)

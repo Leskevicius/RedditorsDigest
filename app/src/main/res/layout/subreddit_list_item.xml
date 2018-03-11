@@ -13,7 +13,7 @@
         android:layout_marginEnd="@dimen/subreddit_list_item_vertical_margin">
 
             <TextView
-                android:id="@+id/title"
+                android:id="@+id/subreddit_item_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -25,7 +25,7 @@
                 android:id="@+id/hint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/title"
+                android:layout_below="@+id/subreddit_item_title"
                 android:layout_alignParentStart="true"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="@dimen/subreddit_list_item_hint_text_size"
@@ -41,7 +41,8 @@
             tools:src="@drawable/ic_favorite"
             android:foreground="?attr/selectableItemBackground"
             android:clickable="true"
-            android:focusable="true"/>
+            android:focusable="true"
+            android:contentDescription="@string/subscribe_button_cd"/>
     </RelativeLayout>
 
 </merge>

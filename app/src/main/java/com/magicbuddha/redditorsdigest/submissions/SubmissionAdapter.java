@@ -9,12 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.magicbuddha.redditorsdigest.R;
 import com.magicbuddha.redditorsdigest.views.CommentView;
-import com.magicbuddha.redditorsdigest.views.SelfPostView;
+import com.magicbuddha.redditorsdigest.views.PostView;
 
 import net.dean.jraw.models.PublicContribution;
 import net.dean.jraw.models.Submission;
@@ -70,12 +67,12 @@ public class SubmissionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     public class ContentSelfViewHolder extends RecyclerView.ViewHolder {
-        SelfPostView view;
+        PostView view;
 
         ContentSelfViewHolder(View itemView) {
             super(itemView);
-            if (itemView instanceof SelfPostView) {
-                view = (SelfPostView) itemView;
+            if (itemView instanceof PostView) {
+                view = (PostView) itemView;
             }
         }
     }
@@ -87,7 +84,7 @@ public class SubmissionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         } else if (viewType == TYPE_CONTENT_PICTURE) {
             return new ContentPictureViewHolder(new ImageView(parent.getContext()));
         } else if (viewType == TYPE_CONTENT_SELF) {
-            return new ContentSelfViewHolder(new SelfPostView(parent.getContext()));
+            return new ContentSelfViewHolder(new PostView(parent.getContext()));
         }
 
         throw new RuntimeException("No type matching: " + viewType + ".");
@@ -100,7 +97,7 @@ public class SubmissionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             CommentViewHolder viewHolder = (CommentViewHolder) holder;
             viewHolder.view.setDepth(item.getDepth() - 1);
             viewHolder.view.setBody(item.getSubject().getBody());
-            viewHolder.view.setAuthor(context.getString(R.string.author_prefix) + " " + item.getSubject().getAuthor() + "   points: " + item.getSubject().getScore());
+            viewHolder.view.setAuthor(context.getString(R.string.author_prefix) + " " + item.getSubject().getAuthor() + "   " + context.getString(R.string.points) + " " + item.getSubject().getScore());
 
             if (position % 2 == 1) {
                 viewHolder.view.setCommentBackgroundColor(ContextCompat.getColor(context, R.color.odd_comment_color));

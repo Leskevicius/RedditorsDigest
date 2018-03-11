@@ -15,6 +15,7 @@
         android:layout_gravity="bottom|end"
         android:layout_marginBottom="@dimen/submission_fob_margin"
         android:layout_marginEnd="@dimen/submission_fob_margin"
+        android:contentDescription="@string/submission_fob_cd"
         android:src="@drawable/ic_open_in_browser_white_24dp"
         android:visibility="invisible" />
 

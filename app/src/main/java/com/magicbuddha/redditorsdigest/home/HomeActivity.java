@@ -31,7 +31,6 @@ import com.magicbuddha.redditorsdigest.reddit.Reddit;
 import com.magicbuddha.redditorsdigest.reddit.SubredditProvider;
 import com.magicbuddha.redditorsdigest.subscriptions.ManageSubscriptionsActivity;
 import com.magicbuddha.redditorsdigest.subscriptions.search.SearchSubredditActivity;
-import com.magicbuddha.redditorsdigest.widget.SubmissionWidgetService;
 
 import net.dean.jraw.RedditClient;
 import net.dean.jraw.models.SubredditSort;
@@ -163,10 +162,8 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
         if (requestCode == SearchSubredditActivity.REQUEST_CODE || requestCode == ManageSubscriptionsActivity.REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 // no new subscriptions, continue with business as usual
-                Snackbar.make(homeLayout, "No updated needed.", Snackbar.LENGTH_SHORT).show();
             } else if (resultCode == SearchSubredditActivity.RESULT_NEED_UPDATE || resultCode == ManageSubscriptionsActivity.RESULT_NEED_UPDATE) {
                 // subscriptions change, update the adapter for submissions
-                Snackbar.make(homeLayout, "Updated needed.", Snackbar.LENGTH_SHORT).show();
                 setLoading(true);
                 subscriptions.clear();
                 submissions.clear();
@@ -181,7 +178,7 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
     public void onAuthenticated(RedditClient redditClient) {
         if (redditClient == null) {
             Log.w(TAG, "Reddit is null");
-            Toast.makeText(this, "Could not authenticate at this time. Please try later.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.could_not_authenticate), Toast.LENGTH_SHORT).show();
             setLoading(false);
             return;
         }

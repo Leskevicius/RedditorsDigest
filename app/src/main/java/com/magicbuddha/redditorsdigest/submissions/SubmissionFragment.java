@@ -5,6 +5,8 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -37,6 +39,8 @@ public class SubmissionFragment extends Fragment implements GetSubmissionDataTas
     protected List<CommentNode<PublicContribution<?>>> comments;
     protected SubmissionAdapter adapter;
 
+    Parcelable layoutManagerState;
+
     @BindView(R.id.submission_fob)
     FloatingActionButton fob;
 
@@ -48,6 +52,7 @@ public class SubmissionFragment extends Fragment implements GetSubmissionDataTas
 
     private static final String SUBMISSION_ID = "submissionId";
     private static final String REDDIT_BASE_URL = "https://www.reddit.com";
+    private static final String LAYOUT_MANAGER_STATE = "LAYOUT_MANAGER_STATE";
 
     public static SubmissionFragment getInstance(String submissionId) {
         Bundle bundle = new Bundle();
@@ -101,5 +106,22 @@ public class SubmissionFragment extends Fragment implements GetSubmissionDataTas
         progressBar.setVisibility(View.GONE);
         fob.setVisibility(View.VISIBLE);
         adapter.setData(comments, submission);
+
+        recyclerView.getLayoutManager().onRestoreInstanceState(layoutManagerState);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            layoutManagerState = savedInstanceState.getParcelable(LAYOUT_MANAGER_STATE);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(LAYOUT_MANAGER_STATE, recyclerView.getLayoutManager().onSaveInstanceState());
     }
 }

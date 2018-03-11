@@ -3,7 +3,6 @@ package com.magicbuddha.redditorsdigest.reddit;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.magicbuddha.redditorsdigest.R;
 
@@ -40,7 +39,7 @@ public class AuthenticateBotTask extends AsyncTask<Void, Void, RedditClient> {
         Context context = weakContext.get();
 
         if (context != null) {
-            UserAgent userAgent = new UserAgent("WHATEVER");
+            UserAgent userAgent = new UserAgent(context.getString(R.string.user_agent));
             Credentials credentials = Credentials.userless(
                     context.getString(R.string.client_id),
                     context.getString(R.string.client_secret),

@@ -18,4 +18,11 @@
 
     <!--ads-->
     <string name="search_subreddits_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="submission_fob_cd">Open with another application</string>
+    <string name="full_screen_image_cd">Full size image</string>
+    <string name="subscribe_button_cd">Subscribe button</string>
+    <string name="could_not_authenticate">Could not authenticate at this time. Please try later.</string>
+    <string name="user_agent">WHATEVER</string>
+    <string name="subs">Subs:</string>
+    <string name="widget_default_title">Please subscribe to a subreddit.</string>
 </resources>
