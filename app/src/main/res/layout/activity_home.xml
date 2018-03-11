@@ -41,11 +41,11 @@
 
     <ProgressBar
         android:id="@+id/home_progressbar"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_width="@dimen/progress_bar_size"
+        android:layout_height="@dimen/progress_bar_size"
+        android:layout_marginBottom="@dimen/home_progress_bar_margin"
+        android:layout_marginEnd="@dimen/home_progress_bar_margin"
+        android:layout_marginStart="@dimen/home_progress_bar_margin"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/fragment_container"
         app:layout_constraintEnd_toEndOf="@+id/fragment_container"

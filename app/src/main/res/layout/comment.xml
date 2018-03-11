@@ -11,7 +11,7 @@
         android:id="@+id/line_container"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="@dimen/comment_depth_margin_start"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="@id/comment_author"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,32 +24,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp">
+        android:layout_marginStart="@dimen/comment_body_container_margin_start"
+        android:layout_marginEnd="@dimen/comment_body_container_margin"
+        android:layout_marginTop="@dimen/comment_body_container_margin"
+        android:layout_marginBottom="@dimen/comment_body_container_margin">
 
         <TextView
             android:id="@+id/comment_body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginEnd="@dimen/comment_body_margin"
+            android:layout_marginStart="@dimen/comment_body_margin"
+            android:layout_marginTop="@dimen/comment_body_margin"
             android:fontFamily="@string/fontFamily"
-            android:textSize="15sp"
+            android:textSize="@dimen/comment_body_text_size"
             tools:text="If I only know!" />
 
         <TextView
             android:id="@+id/comment_author"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginBottom="@dimen/comment_author_margin"
+            android:layout_marginEnd="@dimen/comment_author_margin"
+            android:layout_marginStart="@dimen/comment_author_margin"
             android:fontFamily="@string/fontFamily"
             android:textColor="@color/grey"
-            android:textSize="13sp"
+            android:textSize="@dimen/comment_author_text_size"
             tools:text="By Tony" />
 
     </LinearLayout>

@@ -10,4 +10,39 @@ Refer to App Widget Documentation for margin information
 http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     -->
     <dimen name="widget_margin">8dp</dimen>
+    <dimen name="progress_bar_size">48dp</dimen>
+    <dimen name="home_progress_bar_margin">8dp</dimen>
+    <dimen name="comment_depth_margin_start">4dp</dimen>
+    <dimen name="comment_body_container_margin_start">4dp</dimen>
+    <dimen name="comment_body_container_margin">8dp</dimen>
+    <dimen name="comment_body_margin">8dp</dimen>
+    <dimen name="comment_body_text_size">15sp</dimen>
+    <dimen name="comment_author_margin">8dp</dimen>
+    <dimen name="comment_author_text_size">13sp</dimen>
+    <dimen name="search_input_layout_margin_end">8dp</dimen>
+    <dimen name="search_input_layout_margin">16dp</dimen>
+    <dimen name="search_button_margin_end">16dp</dimen>
+    <dimen name="search_recycler_view_margin_top">8dp</dimen>
+    <dimen name="search_progress_bar_margin_top">16dp</dimen>
+    <dimen name="search_no_result_margin">16dp</dimen>
+    <dimen name="search_no_result_margin_top">8dp</dimen>
+    <dimen name="post_title_margin">8dp</dimen>
+    <dimen name="post_title_text_size">15sp</dimen>
+    <dimen name="post_subreddit_margin">8dp</dimen>
+    <dimen name="post_subreddit_text_size">15sp</dimen>
+    <dimen name="post_points_margin">8dp</dimen>
+    <dimen name="post_points_text_size">15sp</dimen>
+    <dimen name="post_body_margin">8dp</dimen>
+    <dimen name="post_body_text_size">15sp</dimen>
+    <dimen name="post_author_margin">8dp</dimen>
+    <dimen name="post_author_text_size">15sp</dimen>
+    <dimen name="submission_fob_margin">16dp</dimen>
+    <dimen name="widget_bar_padding">4dp</dimen>
+    <dimen name="widget_subreddit_text_size">12sp</dimen>
+    <dimen name="widget_title_margin">4dp</dimen>
+    <dimen name="widget_title_text_size">14sp</dimen>
+    <dimen name="widget_author_margin">4dp</dimen>
+    <dimen name="widget_author_text_size">12sp</dimen>
+    <dimen name="subreddit_list_item_title_text_size">24sp</dimen>
+    <dimen name="subreddit_list_item_hint_text_size">14sp</dimen>
 </resources>

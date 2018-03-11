@@ -11,11 +11,11 @@
         android:id="@+id/self_post_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/post_title_margin"
+        android:layout_marginStart="@dimen/post_title_margin"
+        android:layout_marginTop="@dimen/post_title_margin"
         android:fontFamily="@string/fontFamily"
-        android:textSize="15sp"
+        android:textSize="@dimen/post_title_text_size"
         tools:text="If I only know!" />
 
     <LinearLayout
@@ -27,22 +27,22 @@
             android:id="@+id/self_post_subreddit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginEnd="@dimen/post_subreddit_margin"
+            android:layout_marginStart="@dimen/post_subreddit_margin"
             android:fontFamily="@string/fontFamily"
             android:textColor="@color/grey"
-            android:textSize="15sp"
+            android:textSize="@dimen/post_subreddit_text_size"
             tools:text="If I only know!" />
 
         <TextView
             android:id="@+id/self_post_points"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginEnd="@dimen/post_points_margin"
+            android:layout_marginStart="@dimen/post_points_margin"
             android:fontFamily="@string/fontFamily"
             android:textColor="@color/grey"
-            android:textSize="15sp"
+            android:textSize="@dimen/post_points_text_size"
             tools:text="If I only know!" />
 
     </LinearLayout>
@@ -51,22 +51,22 @@
         android:id="@+id/self_post_body"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/post_body_margin"
+        android:layout_marginStart="@dimen/post_body_margin"
+        android:layout_marginTop="@dimen/post_body_margin"
         android:fontFamily="@string/fontFamily"
-        android:textSize="15sp"
+        android:textSize="@dimen/post_body_text_size"
         tools:text="If I only know!" />
 
     <TextView
         android:id="@+id/self_post_author"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/post_author_margin"
+        android:layout_marginStart="@dimen/post_author_margin"
+        android:layout_marginTop="@dimen/post_author_margin"
         android:fontFamily="@string/fontFamily"
-        android:textSize="15sp"
+        android:textSize="@dimen/post_author_text_size"
         tools:text="If I only know!" />
 
     <View

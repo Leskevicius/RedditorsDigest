@@ -38,7 +38,6 @@ public class SubscriptionsContentProvider extends ContentProvider {
     @Override
     public boolean onCreate() {
         mdbHelper = new SubscriptionsDBHelper(getContext());
-
         return true;
     }
 
@@ -48,7 +47,7 @@ public class SubscriptionsContentProvider extends ContentProvider {
         final SQLiteDatabase database = mdbHelper.getReadableDatabase();
 
         int query = sUriMatcher.match(uri);
-        Cursor cursor = null;
+        Cursor cursor;
 
         switch (query) {
             case SUBSCRIPTIONS: {
@@ -62,12 +61,10 @@ public class SubscriptionsContentProvider extends ContentProvider {
                         sortOrder);
                 break;
             }
-
             default: {
                 throw new UnsupportedOperationException("Could not recognize uri " + uri);
             }
         }
-
         return cursor;
     }
 
@@ -83,7 +80,7 @@ public class SubscriptionsContentProvider extends ContentProvider {
         final SQLiteDatabase database = mdbHelper.getWritableDatabase();
 
         int query = sUriMatcher.match(uri);
-        Uri returnUri = null;
+        Uri returnUri;
 
         switch (query) {
             case SUBSCRIPTIONS: {
@@ -124,7 +121,6 @@ public class SubscriptionsContentProvider extends ContentProvider {
                         "subscription=?",
                         new String[]{subscription}
                 );
-
                 break;
             }
             default:
@@ -143,7 +139,7 @@ public class SubscriptionsContentProvider extends ContentProvider {
         SQLiteDatabase database = mdbHelper.getWritableDatabase();
 
         int query = sUriMatcher.match(uri);
-        int subscriptionsUpdated = 0;
+        int subscriptionsUpdated;
 
         switch (query) {
             case SUBSCRIPTIONS: {

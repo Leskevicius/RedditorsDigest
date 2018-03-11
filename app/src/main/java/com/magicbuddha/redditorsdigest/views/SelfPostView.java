@@ -15,7 +15,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Magic_Buddha on 2/6/2018.
  */
-// title, points, subreddit, author, body
+
 public class SelfPostView extends LinearLayout {
 
     @BindView(R.id.self_post_title)

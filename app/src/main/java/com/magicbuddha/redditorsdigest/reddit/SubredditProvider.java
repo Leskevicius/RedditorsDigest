@@ -56,7 +56,6 @@ public class SubredditProvider implements GetSubmissionIdsTask.SubredditsCallbac
      * Blocking call. Fetches next set of submission ID's for use with {@link com.magicbuddha.redditorsdigest.submissions.SubmissionFragment}.
      */
     public void getNextSubmissions(SubmissionListener listener) {
-        List<String> submissionIds = new ArrayList<>();
         this.listener = listener;
         new GetSubmissionIdsTask(this, submissionPaginatorList).execute();
     }
