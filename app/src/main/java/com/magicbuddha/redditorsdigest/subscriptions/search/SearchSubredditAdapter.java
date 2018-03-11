@@ -1,15 +1,13 @@
 package com.magicbuddha.redditorsdigest.subscriptions.search;
 
-import android.app.Application;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.magicbuddha.redditorsdigest.R;
+import com.magicbuddha.redditorsdigest.models.SubredditData;
 import com.magicbuddha.redditorsdigest.views.SubredditListItemView;
-
-import net.dean.jraw.models.Subreddit;
 
 import java.util.List;
 
@@ -19,7 +17,7 @@ import java.util.List;
 
 public class SearchSubredditAdapter extends RecyclerView.Adapter<SearchSubredditAdapter.SubredditViewHolder> {
 
-    private List<Subreddit> subreddits;
+    private List<SubredditData> subreddits;
     private List<String> subscriptions;
     private SubredditAdapterListener listener;
     private Context context;
@@ -79,13 +77,13 @@ public class SearchSubredditAdapter extends RecyclerView.Adapter<SearchSubreddit
         return this.subreddits == null ? 0 : this.subreddits.size();
     }
 
-    public void setData(List<Subreddit> data, List<String> subscriptions) {
+    public void setData(List<SubredditData> data, List<String> subscriptions) {
         this.subreddits = data;
         this.subscriptions = subscriptions;
         notifyDataSetChanged();
     }
 
     public interface SubredditAdapterListener {
-        void onSubscribed(Subreddit subreddit, boolean subscribed);
+        void onSubscribed(SubredditData subreddit, boolean subscribed);
     }
 }

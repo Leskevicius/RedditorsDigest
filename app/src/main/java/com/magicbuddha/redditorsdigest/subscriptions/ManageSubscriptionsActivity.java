@@ -60,14 +60,16 @@ public class ManageSubscriptionsActivity extends AppCompatActivity implements Ma
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey(SUBSCRIPTIONS)) {
                 subscriptions = savedInstanceState.getStringArrayList(SUBSCRIPTIONS);
+                adapter.setData(subscriptions);
             }
+        } else {
+            getSupportLoaderManager().initLoader(LOADER_ID, null, this);
         }
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(adapter);
 
-        getSupportLoaderManager().initLoader(LOADER_ID, null, this);
 
         AnalyticsApplication application = (AnalyticsApplication) getApplication();
 
@@ -101,7 +103,8 @@ public class ManageSubscriptionsActivity extends AppCompatActivity implements Ma
         switch (item.getItemId()) {
             case android.R.id.home:
                 Intent returnIntent = new Intent();
-                setResult(changed ? RESULT_NEED_UPDATE : RESULT_OK, returnIntent);                finish();
+                setResult(changed ? RESULT_NEED_UPDATE : RESULT_OK, returnIntent);
+                finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);

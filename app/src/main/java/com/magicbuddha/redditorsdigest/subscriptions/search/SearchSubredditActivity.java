@@ -31,6 +31,7 @@ import com.google.android.gms.analytics.Tracker;
 import com.magicbuddha.redditorsdigest.AnalyticsApplication;
 import com.magicbuddha.redditorsdigest.R;
 import com.magicbuddha.redditorsdigest.data.SubscriptionsContract;
+import com.magicbuddha.redditorsdigest.models.SubredditData;
 import com.magicbuddha.redditorsdigest.reddit.SearchSubredditsTask;
 
 import net.dean.jraw.models.Subreddit;
@@ -48,7 +49,6 @@ import butterknife.ButterKnife;
 public class SearchSubredditActivity extends AppCompatActivity implements SearchSubredditsTask.SearchCallback, SearchSubredditAdapter.SubredditAdapterListener {
 
     private static final String TAG = SearchSubredditActivity.class.getSimpleName();
-
     @BindView(R.id.search_recycler_view)
     RecyclerView recyclerView;
 
@@ -71,13 +71,17 @@ public class SearchSubredditActivity extends AppCompatActivity implements Search
     AdView adView;
 
     private SearchSubredditAdapter adapter;
-    private ArrayList<String> subscriptionsChanged;
-    private boolean searchClicked;
 
+    private List<String> subscriptionsChanged;
+    private List<SubredditData> subreddits;
+    private List<String> subscriptions;
+    private boolean searchClicked;
     public static final int REQUEST_CODE = 37;
     public static final int RESULT_NEED_UPDATE = -2;
 
     private static final String SUBSCRIPTIONS_CHANGED = "subscriptionsChanged";
+    private static final String SUBREDDITS = "subreddits";
+    private static final String SUBSCRIPTIONS = "subscriptions";
     private static final String SEARCH_TEXT = "searchText";
     private static final String SEARCH_CLICKED = "searchClicked";
 
@@ -124,16 +128,22 @@ public class SearchSubredditActivity extends AppCompatActivity implements Search
 
         if (savedInstanceState != null) {
             subscriptionsChanged = savedInstanceState.containsKey(SUBSCRIPTIONS_CHANGED) ? savedInstanceState.getStringArrayList(SUBSCRIPTIONS_CHANGED) : new ArrayList<String>();
+            if (savedInstanceState.containsKey(SUBREDDITS)) {
+                subreddits = savedInstanceState.getParcelableArrayList(SUBREDDITS);
+            } else {
+                subreddits = new ArrayList<>();
+            }
+            subscriptions = savedInstanceState.containsKey(SUBSCRIPTIONS) ? savedInstanceState.getStringArrayList(SUBSCRIPTIONS) : new ArrayList<String>();
             searchClicked = savedInstanceState.getBoolean(SEARCH_CLICKED);
 
-            String searchText = savedInstanceState.getString(SEARCH_TEXT, null);
-
-            if (!TextUtils.isEmpty(searchText) && searchClicked) {
-                showNoResults(false);
-                search(searchText);
+            if (subreddits.isEmpty() && searchClicked) {
+                showNoResults(true);
+            } else if (!subreddits.isEmpty()) {
+                adapter.setData(subreddits, subscriptions);
             }
         } else {
             subscriptionsChanged = new ArrayList<>();
+            subreddits = new ArrayList<>();
         }
 
         AnalyticsApplication application = (AnalyticsApplication) getApplication();
@@ -146,7 +156,15 @@ public class SearchSubredditActivity extends AppCompatActivity implements Search
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         if (subscriptionsChanged != null && subscriptionsChanged.size() > 0) {
-            outState.putStringArrayList(SUBSCRIPTIONS_CHANGED, subscriptionsChanged);
+            outState.putStringArrayList(SUBSCRIPTIONS_CHANGED, new ArrayList<>(subscriptionsChanged));
+        }
+
+        if (subreddits != null && subreddits.size() > 0) {
+            outState.putParcelableArrayList(SUBREDDITS, new ArrayList<>(subreddits));
+        }
+
+        if (subscriptions != null && subscriptions.size() > 0) {
+            outState.putStringArrayList(SUBSCRIPTIONS, new ArrayList<>(subscriptions));
         }
 
         if (!TextUtils.isEmpty(input.getText().toString())) {
@@ -159,10 +177,11 @@ public class SearchSubredditActivity extends AppCompatActivity implements Search
     }
 
     @Override
-    public void onSearchComplete(List<Subreddit> subreddits) {
+    public void onSearchComplete(List<SubredditData> subreddits) {
         setLoading(false);
 
         if (subreddits != null) {
+            this.subreddits = subreddits;
             Uri SubscriptionsUri = SubscriptionsContract.SubscriptionEntity.CONTENT_URI;
 
             Cursor result = getContentResolver().query(
@@ -173,7 +192,7 @@ public class SearchSubredditActivity extends AppCompatActivity implements Search
                     null
             );
 
-            List<String> subscriptions = new ArrayList<>();
+            subscriptions = new ArrayList<>();
             result.moveToFirst();
             while (!result.isAfterLast()) {
                 subscriptions.add(result.getString(result.getColumnIndex(SubscriptionsContract.SubscriptionEntity.SUBSCRIPTION_COLUMN))); //add the item
@@ -246,7 +265,7 @@ public class SearchSubredditActivity extends AppCompatActivity implements Search
     }
 
     @Override
-    public void onSubscribed(Subreddit subreddit, boolean subscribed) {
+    public void onSubscribed(SubredditData subreddit, boolean subscribed) {
         if (subscribed) {
             ContentValues cv = new ContentValues();
             cv.put(SubscriptionsContract.SubscriptionEntity.SUBSCRIPTION_COLUMN, subreddit.getName());

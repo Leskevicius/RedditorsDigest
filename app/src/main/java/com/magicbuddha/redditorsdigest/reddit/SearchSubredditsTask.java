@@ -4,17 +4,20 @@ import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.magicbuddha.redditorsdigest.models.SubredditData;
+
 import net.dean.jraw.RedditClient;
 import net.dean.jraw.models.Subreddit;
 import net.dean.jraw.pagination.SubredditSearchPaginator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Magic_Buddha on 12/26/2017.
  */
 
-public class SearchSubredditsTask extends AsyncTask<String, Void, List<Subreddit>> {
+public class SearchSubredditsTask extends AsyncTask<String, Void, List<SubredditData>> {
 
     private static final String TAG = SearchSubredditsTask.class.getCanonicalName();
 
@@ -28,9 +31,10 @@ public class SearchSubredditsTask extends AsyncTask<String, Void, List<Subreddit
     }
 
     @Override
-    protected List<Subreddit> doInBackground(String... strings) {
+    protected List<SubredditData> doInBackground(String... strings) {
         RedditClient reddit = Reddit.getInstance().getRedditClient();
-        List<Subreddit> list = null;
+        List<Subreddit> list;
+        List<SubredditData> subredditDataList = new ArrayList<>();
 
         try {
             SubredditSearchPaginator paginator = reddit.searchSubreddits()
@@ -47,15 +51,19 @@ public class SearchSubredditsTask extends AsyncTask<String, Void, List<Subreddit
                     }
                 }
             }
+
+            for (Subreddit s : list) {
+                subredditDataList.add(SubredditData.parse(s));
+            }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }
 
-        return list;
+        return subredditDataList;
     }
 
     @Override
-    protected void onPostExecute(List<Subreddit> subreddits) {
+    protected void onPostExecute(List<SubredditData> subreddits) {
         super.onPostExecute(subreddits);
         callback.onSearchComplete(subreddits);
     }
@@ -64,8 +72,8 @@ public class SearchSubredditsTask extends AsyncTask<String, Void, List<Subreddit
         /**
          * Called when search for subreddits is complete.
          *
-         * @param subreddits {@link List<String>} of subreddits found.
+         * @param subreddits {@link List<SubredditData>} of subreddits found.
          */
-        void onSearchComplete(List<Subreddit> subreddits);
+        void onSearchComplete(List<SubredditData> subreddits);
     }
 }
