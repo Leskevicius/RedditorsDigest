@@ -15,7 +15,6 @@
     <string name="subreddit_prefix">/r/</string>
     <string name="points">points</string>
     <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
 
     <!--ads-->
     <string name="search_subreddits_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
