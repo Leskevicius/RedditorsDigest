@@ -1,9 +1,12 @@
 package com.magicbuddha.redditorsdigest.subscriptions.search;
 
+import android.app.Application;
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.magicbuddha.redditorsdigest.R;
 import com.magicbuddha.redditorsdigest.views.SubredditListItemView;
 
 import net.dean.jraw.models.Subreddit;
@@ -19,9 +22,11 @@ public class SearchSubredditAdapter extends RecyclerView.Adapter<SearchSubreddit
     private List<Subreddit> subreddits;
     private List<String> subscriptions;
     private SubredditAdapterListener listener;
+    private Context context;
 
-    public SearchSubredditAdapter(SubredditAdapterListener listener) {
+    public SearchSubredditAdapter(Context context, SubredditAdapterListener listener) {
         this.listener = listener;
+        this.context = context;
     }
 
     public class SubredditViewHolder extends RecyclerView.ViewHolder {
@@ -61,7 +66,7 @@ public class SearchSubredditAdapter extends RecyclerView.Adapter<SearchSubreddit
             }
         });
         holder.view.setTitle(subreddits.get(position).getName());
-        holder.view.setHint("Subs: " + subreddits.get(position).getSubscribers());
+        holder.view.setHint(context.getString(R.string.subs) + " " + subreddits.get(position).getSubscribers());
         if (subscriptions.contains(subreddits.get(position).getName())) {
             holder.view.setSubscribed(true);
         } else {

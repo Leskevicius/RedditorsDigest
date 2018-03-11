@@ -78,7 +78,7 @@ public class SubmissionWidgetService extends IntentService implements Authentica
 
     private void initReddit() {
         Reddit reddit = Reddit.getInstance();
-        UserAgent userAgent = new UserAgent("WHATEVER");
+        UserAgent userAgent = new UserAgent(getString(R.string.user_agent));
         Credentials credentials = Credentials.userless(
                 getString(R.string.client_id),
                 getString(R.string.client_secret),
@@ -169,7 +169,7 @@ public class SubmissionWidgetService extends IntentService implements Authentica
         if (submission != null) {
             views.setTextViewText(R.id.widget_subreddit, submission.getSubreddit());
             views.setTextViewText(R.id.widget_title, submission.getTitle());
-            views.setTextViewText(R.id.widget_author, "By " + submission.getAuthor());
+            views.setTextViewText(R.id.widget_author, getString(R.string.author_prefix) + " " + submission.getAuthor());
             views.setViewVisibility(R.id.widget_author, View.VISIBLE);
             views.setViewVisibility(R.id.widget_title, View.VISIBLE);
             views.setViewVisibility(R.id.widget_progressbar, View.GONE);
@@ -192,8 +192,8 @@ public class SubmissionWidgetService extends IntentService implements Authentica
             manager.updateAppWidget(widgetIds, views);
 
         } else {
-            views.setTextViewText(R.id.widget_subreddit, "Redditors Digest");
-            views.setTextViewText(R.id.widget_title, "Please subscribe to a subreddit.");
+            views.setTextViewText(R.id.widget_subreddit, getString(R.string.app_name));
+            views.setTextViewText(R.id.widget_title, getString(R.string.widget_default_title));
             views.setViewVisibility(R.id.widget_title, View.VISIBLE);
             views.setViewVisibility(R.id.widget_author, View.GONE);
             views.setViewVisibility(R.id.widget_progressbar, View.GONE);

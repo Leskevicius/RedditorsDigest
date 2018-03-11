@@ -39,7 +39,7 @@ public class AuthenticateBotTask extends AsyncTask<Void, Void, RedditClient> {
         Context context = weakContext.get();
 
         if (context != null) {
-            UserAgent userAgent = new UserAgent("WHATEVER");
+            UserAgent userAgent = new UserAgent(context.getString(R.string.user_agent));
             Credentials credentials = Credentials.userless(
                     context.getString(R.string.client_id),
                     context.getString(R.string.client_secret),

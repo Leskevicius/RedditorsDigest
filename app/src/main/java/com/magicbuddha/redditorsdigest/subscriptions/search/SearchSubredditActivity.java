@@ -117,7 +117,7 @@ public class SearchSubredditActivity extends AppCompatActivity implements Search
         });
 
         // recycler view
-        adapter = new SearchSubredditAdapter(this);
+        adapter = new SearchSubredditAdapter(this,this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(adapter);

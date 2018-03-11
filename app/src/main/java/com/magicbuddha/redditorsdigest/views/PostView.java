@@ -16,7 +16,7 @@ import butterknife.ButterKnife;
  * Created by Magic_Buddha on 2/6/2018.
  */
 
-public class SelfPostView extends LinearLayout {
+public class PostView extends LinearLayout {
 
     @BindView(R.id.self_post_title)
     TextView titleView;
@@ -38,19 +38,19 @@ public class SelfPostView extends LinearLayout {
     TextView bodyView;
     private String body;
 
-    public SelfPostView(Context context) {
+    public PostView(Context context) {
         super(context);
 
         init(context, null);
     }
 
-    public SelfPostView(Context context, AttributeSet attrs) {
+    public PostView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         init(context, attrs);
     }
 
-    public SelfPostView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public PostView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         init(context, attrs);
