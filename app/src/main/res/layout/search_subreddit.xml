@@ -24,9 +24,9 @@
             android:id="@+id/input_layout_search"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginEnd="@dimen/search_input_layout_margin_end"
+            android:layout_marginStart="@dimen/search_input_layout_margin"
+            android:layout_marginTop="@dimen/search_input_layout_margin"
             android:layout_weight="1">
 
             <EditText
@@ -45,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="@dimen/search_button_margin_end"
             android:background="@android:color/transparent"
             android:clickable="true"
             android:contentDescription="@string/search_button_content_description"
@@ -60,25 +60,25 @@
         android:id="@+id/search_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/search_recycler_view_margin_top"
         android:layout_above="@+id/ad_view"
         android:layout_below="@+id/search_header"/>
 
     <ProgressBar
         android:id="@+id/search_progressbar"
-        android:layout_width="42dp"
-        android:layout_height="42dp"
+        android:layout_width="@dimen/progress_bar_size"
+        android:layout_height="@dimen/progress_bar_size"
         android:visibility="gone"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/search_progress_bar_margin_top"
         android:layout_centerInParent="true" />
 
     <TextView
         android:id="@+id/search_no_results"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingEnd="16dp"
-        android:paddingStart="16dp"
-        android:paddingTop="8dp"
+        android:paddingEnd="@dimen/search_no_result_margin"
+        android:paddingStart="@dimen/search_no_result_margin"
+        android:paddingTop="@dimen/search_no_result_margin_top"
         android:text="@string/search_no_content"
         android:visibility="gone"
         android:layout_below="@+id/search_header"/>
