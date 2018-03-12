@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.MobileAds;
@@ -25,6 +26,7 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.magicbuddha.redditorsdigest.AnalyticsApplication;
 import com.magicbuddha.redditorsdigest.R;
+import com.magicbuddha.redditorsdigest.Utils;
 import com.magicbuddha.redditorsdigest.data.SubscriptionsContract;
 import com.magicbuddha.redditorsdigest.reddit.AuthenticateBotTask;
 import com.magicbuddha.redditorsdigest.reddit.Reddit;
@@ -60,6 +62,10 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
 
     @BindView(R.id.fragment_viewpager)
     ViewPager viewPager;
+
+    @BindView(R.id.no_internet_message)
+    TextView noInternetTextView;
+
     private List<String> subscriptions = new ArrayList<>();
     private List<String> submissions = new ArrayList<>();
 
@@ -78,6 +84,11 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
 
         adapter = new SubmissionPagerAdapter(getSupportFragmentManager(), this);
         viewPager.setAdapter(adapter);
+
+        if (!Utils.isNetworkAvailable(this)) {
+            showNoInternetConnection();
+            return;
+        }
 
         if (savedInstanceState == null) {
             MobileAds.initialize(this, getString(R.string.app_ad_id));
@@ -110,6 +121,10 @@ public class HomeActivity extends AppCompatActivity implements AuthenticateBotTa
         Tracker tracker = application.getDefaultTracker();
         tracker.setScreenName(TAG);
         tracker.send(new HitBuilders.ScreenViewBuilder().build());
+    }
+
+    private void showNoInternetConnection() {
+        noInternetTextView.setVisibility(View.VISIBLE);
     }
 
     private void showNoSubscriptions() {

@@ -25,4 +25,5 @@
     <string name="user_agent">WHATEVER</string>
     <string name="subs">Subs:</string>
     <string name="widget_default_title">Please subscribe to a subreddit.</string>
+    <string name="no_internet_message">No internet connection. Please connect to internet and restart the app.</string>
 </resources>

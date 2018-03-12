@@ -52,4 +52,15 @@
         app:layout_constraintStart_toStartOf="@+id/fragment_container"
         app:layout_constraintTop_toBottomOf="@+id/home_app_bar" />
 
+    <TextView
+        android:id="@+id/no_internet_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/no_subscription_margins"
+        android:layout_marginStart="@dimen/no_subscription_margins"
+        android:layout_marginTop="@dimen/no_subscription_margins"
+        android:text="@string/no_internet_message"
+        app:layout_constraintTop_toBottomOf="@+id/home_app_bar"
+        android:visibility="gone"/>
+
 </android.support.constraint.ConstraintLayout>

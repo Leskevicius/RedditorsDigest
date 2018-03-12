@@ -82,6 +82,17 @@
         android:visibility="gone"
         android:layout_below="@+id/search_header"/>
 
+    <TextView
+        android:id="@+id/search_no_internet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingEnd="@dimen/search_no_result_margin"
+        android:paddingStart="@dimen/search_no_result_margin"
+        android:paddingTop="@dimen/search_no_result_margin_top"
+        android:text="@string/no_internet_message"
+        android:visibility="gone"
+        android:layout_below="@+id/search_header"/>
+
     <com.google.android.gms.ads.AdView
         xmlns:ads="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ad_view"

@@ -30,6 +30,7 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.magicbuddha.redditorsdigest.AnalyticsApplication;
 import com.magicbuddha.redditorsdigest.R;
+import com.magicbuddha.redditorsdigest.Utils;
 import com.magicbuddha.redditorsdigest.data.SubscriptionsContract;
 import com.magicbuddha.redditorsdigest.models.SubredditData;
 import com.magicbuddha.redditorsdigest.reddit.SearchSubredditsTask;
@@ -67,6 +68,9 @@ public class SearchSubredditActivity extends AppCompatActivity implements Search
     @BindView(R.id.search_no_results)
     TextView noResultsView;
 
+    @BindView(R.id.search_no_internet)
+    TextView searchNoInternet;
+
     @BindView(R.id.ad_view)
     AdView adView;
 
@@ -91,7 +95,6 @@ public class SearchSubredditActivity extends AppCompatActivity implements Search
         setContentView(R.layout.search_subreddit);
         ButterKnife.bind(this);
 
-        adView.loadAd(new AdRequest.Builder().build());
 
         // tool bar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -99,6 +102,13 @@ public class SearchSubredditActivity extends AppCompatActivity implements Search
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+        if (!Utils.isNetworkAvailable(this)) {
+            searchNoInternet.setVisibility(View.VISIBLE);
+            return;
+        }
+
+        adView.loadAd(new AdRequest.Builder().build());
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -257,7 +267,9 @@ public class SearchSubredditActivity extends AppCompatActivity implements Search
         switch (item.getItemId()) {
             case android.R.id.home:
                 Intent returnIntent = new Intent();
-                setResult(subscriptionsChanged.size() > 0 ? RESULT_NEED_UPDATE : RESULT_OK, returnIntent);
+                if (subscriptionsChanged != null) {
+                    setResult(subscriptionsChanged.size() > 0 ? RESULT_NEED_UPDATE : RESULT_OK, returnIntent);
+                }
                 finish();
                 return true;
         }
